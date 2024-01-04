@@ -16,31 +16,30 @@ class UserSeeder extends Seeder
     public function run()
     {
         $user = User::create([
-            'name' => 'admin',
+            'name' => 'Admin',
+            'no_hp' => "08998089724",
+            'jenis_kelamin' => "Laki-laki",
             'email' => 'admin@gmail.com',
-            'password' => Hash::make('admin1234')
+            'password' => Hash::make('admin123')
         ]);
         $user->assignRole('Admin');
 
-        $direktur = User::create([
-            'name' => 'direktur',
-            'email' => 'direktur@gmail.com',
-            'password' => Hash::make('direktur1234')
+        $kasir = User::create([
+            'name' => 'Kasir',
+            'no_hp' => "08223008246",
+            'jenis_kelamin' => "Laki-laki",
+            'email' => 'kasir@gmail.com',
+            'password' => Hash::make('kasir123')
         ]);
-        $direktur->assignRole('Direktur');
+        $kasir->assignRole('Kasir');
 
-        $produksi = User::create([
-            'name' => 'produksi',
-            'email' => 'produksi@gmail.com',
-            'password' => Hash::make('produksi1234')
+        $dapur = User::create([
+            'name' => 'Dapur',
+            'no_hp' => "08588089205",
+            'jenis_kelamin' => "Laki-laki",
+            'email' => 'dapur@gmail.com',
+            'password' => Hash::make('dapur123')
         ]);
-        $produksi->assignRole('Produksi');
-
-        $gudang = User::create([
-            'name' => 'gudang',
-            'email' => 'gudang@gmail.com',
-            'password' => Hash::make('gudang1234')
-        ]);
-        $gudang->assignRole('Gudang');
+        $dapur->assignRole('Dapur');
     }
 }

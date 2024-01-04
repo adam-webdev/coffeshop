@@ -1,11 +1,11 @@
 @extends('layouts.layout')
-@section('title', 'Pegawai')
+@section('title', 'Meja')
 
 
 @section('content')
     @include('sweetalert::alert')
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Data Pegawai </h1>
+        <h1 class="h3 mb-0 text-gray-800">Data Meja </h1>
         <!-- Button trigger modal -->
         {{-- @role('Admin')
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
@@ -20,44 +20,27 @@
     <div class="row">
         <div class="col-md-4">
             <div class="card ">
-                <h5 class="pt-4 pl-2">Tambah Data Pegawai</h5>
-                <form action="{{ route('user.store') }}" method="POST">
+                <h5 class="pt-4 pl-2">Tambah Meja</h5>
+                <form action="{{ route('meja.store') }}" method="POST">
                     @csrf
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="nama">Nama Pegawai :</label>
-                            <input type="text" name="name" class="form-control" id="nama" required>
+                            <label for="nama">Nama Meja :</label>
+                            <input type="text" name="nama" class="form-control" id="nama" required>
                         </div>
                         <div class="form-group">
-                            <label for="email">Email :</label>
-                            <input type="email" name="email" class="form-control" id="email" required>
+                            <label for="kursi">Kursi :</label>
+                            <input type="number" name="kursi" class="form-control" id="kursi" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="nohp">Status :</label>
+                            <select name="status" id="status" class="form-control">
+                                <option value=""disabled>-- Pilih Status -- </option>
+                                <option value="1">Terisi </option>
+                                <option value="0">Kosong </option>
+                            </select>
                         </div>
 
-                        <div class="form-group">
-                            <label for="no_hp">No Hp :</label>
-                            <input type="number" name="no_hp" class="form-control" id="no_hp" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="jenis">Jenis Kelamin :</label>
-                            <select name="jenis_kelamin" id="jenis" class="form-control">
-                                <option value=""disabled>-- Pilih Jenis Kelamin -- </option>
-                                <option value="Laki-laki">Laki-laki </option>
-                                <option value="Perempuan">Perempuan </option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="roles">Roles :</label>
-                            <select name="roles" id="roles" class="form-control">
-                                <option value=""disabled>-- Pilih Roles -- </option>
-                                @foreach ($roles as $i => $name)
-                                    <option value="{{ $name }}">{{ $name }} </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="password">Password :</label>
-                            <input type="password" name="password" class="form-control" id="password" required>
-                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal"> Batal</button>
@@ -78,25 +61,19 @@
                                 <thead>
                                     <tr align="center">
                                         <th width="2%">No</th>
-                                        <th>Nama </th>
-                                        <th>Email </th>
-                                        <th>No HP </th>
-                                        <th>Jenis Kelamin </th>
-                                        <th>Roles</th>
-                                        {{-- <th width="15%">Status </th> --}}
+                                        <th>Nama Meja</th>
+                                        <th>Kursi</th>
+                                        <th width="15%">Status </th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($users as $u)
+                                    @foreach ($meja as $m)
                                         <tr align="center">
                                             <td width="2%">{{ $loop->iteration }}</td>
-                                            <td>{{ $u->name }}</td>
-                                            <td>{{ $u->email }}</td>
-                                            <td>{{ $u->no_hp }}</td>
-                                            <td>{{ $u->jenis_kelamin }}</td>
-                                            <td>{{ $u->roles->pluck('name')[0] }}</td>
-                                            {{-- <td width="15%">
+                                            <td>{{ $m->nama }}</td>
+                                            <td>{{ $m->kursi }}</td>
+                                            <td width="15%">
                                                 @php
                                                     if ($m->status == 0) {
                                                         echo '<i style="color: green" class="fas fa-circle"></i> Kosong';
@@ -104,15 +81,15 @@
                                                         echo '<i style="color: red" class="fas fa-circle"></i> Terisi';
                                                     }
                                                 @endphp
-                                            </td> --}}
+                                            </td>
                                             <td align="center" width="10%">
                                                 @role('Admin')
-                                                    <a href="{{ route('user.edit', [$u->id]) }}" data-toggle="tooltip"
+                                                    <a href="{{ route('meja.edit', [$m->id]) }}" data-toggle="tooltip"
                                                         title="Edit"
                                                         class="d-none  d-sm-inline-block btn btn-sm btn-secondary shadow-sm">
                                                         <i class="fas fa-edit fa-sm text-white"></i>
                                                     </a>
-                                                    <a href="/user/hapus/{{ $u->id }}" data-toggle="tooltip"
+                                                    <a href="/meja/hapus/{{ $m->id }}" data-toggle="tooltip"
                                                         title="Hapus" onclick="return confirm('Yakin Ingin menghapus data?')"
                                                         class="d-none d-sm-inline-block btn btn-sm text-white shadow-sm"
                                                         style="background-color: #663300;">

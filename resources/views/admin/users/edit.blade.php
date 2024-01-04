@@ -1,45 +1,80 @@
 @extends('layouts.layout')
-@section('title', 'Edit Data User')
+@section('title', 'Edit Pegawai')
 @section('content')
     @include('sweetalert::alert')
-    <form action="{{ route('user.update', [$user->id]) }}" method="POST">
-        @csrf
-        <input type="hidden" name="_method" value="PUT">
-        <fieldset>
-            <legend>Edit Data User</legend>
-            <div class="form-group row">
-                <div class="col-md-5">
-                    <label for="username">Username :</label>
-                    <input id="username" type="text" name="username" class="form-control" required
-                        value="{{ $user->name }}">
-                </div>
-                <div class="col-md-5">
-                    <label for="email">Email :</label>
-                    <input id="email" type="email" name="email" class="form-control" required value="{{ $user->email }}">
-                </div>
-                <div class="col-md-5">
-                    <label for="email">Password :</label>
-                    <input id="email" type="password" name="email" class="form-control" required
-                        value="{{ $user->password }}">
-                </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card ">
+                <h5 class="pt-4 pl-2">Edit Data Pegawai</h5>
+                <form action="{{ route('user.update', [$user->id]) }}" method="POST">
+                    @method('put')
+                    @csrf
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="nama">Nama Pegawai :</label>
+                            <input type="text" name="name" value="{{ $user->name }}" class="form-control"
+                                id="nama" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email :</label>
+                            <input type="email" name="email" value="{{ $user->email }}" class="form-control"
+                                id="email" required>
+                        </div>
 
-                <div class="col-md-5">
-                    <label for="roles"> :</label>
-                    <select style="width:100%" name="jenis_material" id="roles" class="form-control select" required>
-                        <option value="{{ $user->roles }}">{{ $user->roles }}
-                        </option>
-                        <option value="admin">Admin</option>
-                        <option value="direktur">Direktur</option>
-                        <option value="gudang">Gudang</option>
-                        <option value="produksi">Produksi</option>
-                    </select>
-                </div>
+                        <div class="form-group">
+                            <label for="no_hp">No Hp :</label>
+                            <input type="number" name="no_hp" value="{{ $user->no_hp }}" class="form-control"
+                                id="no_hp" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="jk">Jenis Kelamin :</label>
+                            <select name="jenis_kelamin" id="jk" class="form-control">
+                                <option value=""disabled>-- Pilih Jenis Kelamin -- </option>
+                                <option value="Laki-laki" {{ $user->jenis_kelamin === 'Laki-laki' ? 'selected' : '' }}>
+                                    Laki-laki </option>
+                                <option value="Perempuan"{{ $user->jenis_kelamin === 'Perempuan' ? 'selected' : '' }}>
+                                    Perempuan </option>
+                            </select>
+                        </div>
+                        {{-- <div class="form-group">
+                            <label for="roles">Roles :</label>
+                            <select name="roles" id="roles" class="form-control">
+                                <option value=""disabled>-- Pilih Roles -- </option>
+                                <option value="Admin" {{ $user->roles->pluck('name') === 'Admin' ? 'selected' : '' }}>
+                                    Admin </option>
+                                <option value="Dapur" {{ $user->roles->pluck('name') === 'Dapur' ? 'selected' : '' }}>
+                                    Dapur </option>
+                                <option value="Kasir" {{ $user->roles->pluck('name') === 'Kasir' ? 'selected' : '' }}>
+                                    Kasir </option>
+                            </select>
+                        </div> --}}
+                        <div class="form-group">
+                            <label for="roles">Roles :</label>
+                            <select name="roles" id="roles" class="form-control">
+                                <option value=""disabled>-- Pilih Roles -- </option>
+                                @foreach ($roles as $i => $name)
+                                    <option value="{{ $name }}"
+                                        {{ $user->roles->pluck('name')[0] === $name ? 'selected' : '' }}>{{ $name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <span class="text-warning text-sm"><small>Biarkan kosong jika tidak ingin merubah password
+                            </small></span>
+                        <div class="form-group">
+                            <label for="password">Password :</label>
+                            <input type="password" name="password" class="form-control" id="password">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal"> Batal</button>
+                        <input type="submit" class="btn btn-primary " style="background-color: #663300;" value="Simpan">
+                    </div>
+                </form>
             </div>
 
-            <input type="submit" class="btn btn-success btn-send" value="Update">
-            <input type="Button" class="btn btn-primary btn-send" value="Kembali" onclick="history.go(-1)">
-        </fieldset>
-    </form>
+        </div>
+    </div>
 @endsection
 {{-- @section('scripts')
      <script>

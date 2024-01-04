@@ -5,13 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class BahanBakuKeluar extends Model
+class Ingredients extends Model
 {
     use HasFactory;
-    protected $table = 'bahan_baku_keluars';
-
+    protected $table = 'ingredients';
     public function bahanbaku()
     {
         return $this->belongsTo(BahanBaku::class);
+    }
+    public function menu()
+    {
+        return $this->belongsTo(Menu::class);
     }
 }

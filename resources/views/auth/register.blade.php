@@ -30,8 +30,7 @@
                             <div class="col-lg-20">
                                 <div class="p-5">
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Sistem Informasi Produksi<br>CV Mutiara
-                                            Kencana<br>
+                                        <h1 class="h4 text-gray-900 mb-4">Sistem Informasi Produksi<br>CV Rapopo<br>
                                             <br><img src="{{ asset('asset/img/logos.jpg') }}" width="160">
                                         </h1>
                                     </div>
@@ -42,8 +41,9 @@
                                                 class="col-md-12 col-form-label">{{ __('Name :') }}</label>
                                             <div class="col-md-12">
                                                 <input id="name" type="text"
-                                                    class="form-control @error('name') is-invalid @enderror" name="name"
-                                                    value="{{ old('name') }}" required autocomplete="name" autofocus>
+                                                    class="form-control @error('name') is-invalid @enderror"
+                                                    name="name" value="{{ old('name') }}" required
+                                                    autocomplete="name" autofocus>
                                                 @error('name')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>

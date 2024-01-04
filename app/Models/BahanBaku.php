@@ -11,10 +11,7 @@ class BahanBaku extends Model
 
     protected $table = 'bahan_bakus';
 
-    public function supplier()
-    {
-        return $this->belongsTo(Supplier::class);
-    }
+
 
     public function bahanbakukeluar()
     {
@@ -26,13 +23,9 @@ class BahanBaku extends Model
         return $this->hasOne(BahanBakuMasuk::class);
     }
 
-    public function permintaanbahanbaku()
-    {
-        return $this->hasMany(Stok::class);
-    }
 
-    public function pembeliandetail()
+    public function ingredients()
     {
-        return $this->hasMany(PembelianDetail::class);
+        return $this->hasMany(Ingredients::class);
     }
 }

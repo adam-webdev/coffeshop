@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\BahanBaku;
 use App\Models\BahanBakuKeluar;
 use App\Models\BahanBakuMasuk;
+use App\Models\BillOfMaterial;
 use App\Models\FinishGood;
 use App\Models\Hutang;
 use App\Models\JadwalProduksi;
@@ -164,14 +165,16 @@ class LaporanController extends Controller
         $periode = $request->periode;
         if ($periode == "all") {
             $data = PencatatanProduksi::with('jadwalproduksi', 'finishgood')->get();
-            $pdf = PDF::loadview('produksi.pencatatan_produksi.laporan.print', compact('data', 'periode'))->setPaper('a4', 'landscape');
+            $bom = BillOfMaterial::with('finishgood', 'bahanbaku')->get();
+            $pdf = PDF::loadview('produksi.pencatatan_produksi.laporan.print-hasil', compact('data', 'periode', 'bom'))->setPaper('a4', 'portrait');
             return $pdf->stream('laporan-pencatatan-produksi-all.pdf');
         } else if ($periode == "periode") {
             $tgl_awal = $request->awal;
             $tgl_akhir = $request->akhir;
             $data = PencatatanProduksi::whereBetween('created_at', [$tgl_awal, $tgl_akhir])
                 ->orderBy('created_at', 'ASC')->get();
-            $pdf = PDF::loadview('produksi.pencatatan_produksi.laporan.print', compact('data', 'periode', 'tgl_awal', 'tgl_akhir'))->setPaper('a4', 'landscape');
+            $bom = BillOfMaterial::with('finishgood', 'bahanbaku')->get();
+            $pdf = PDF::loadview('produksi.pencatatan_produksi.laporan.print-hasil', compact('bom', 'data', 'periode', 'tgl_awal', 'tgl_akhir'))->setPaper('a4', 'portrait');
             return $pdf->stream('laporan-pencatatan-produksi-perperiode.pdf');
         }
     }

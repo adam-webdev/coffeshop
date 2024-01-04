@@ -17,8 +17,8 @@ class BahanBakuMasukController extends Controller
     public function index()
     {
         $bahanbaku = Bahanbaku::all();
-        $bahanbaku_masuk = BahanBakuMasuk::with('bahanbaku')->get();
-        return view('gudang.bahanbaku_masuk.index', compact("bahanbaku_masuk", "bahanbaku"));
+        $bahanbakumasuk = BahanBakuMasuk::with('bahanbaku')->get();
+        return view('dapur.bahanbakumasuk.index', compact("bahanbakumasuk", "bahanbaku"));
     }
 
     public function create()
@@ -46,9 +46,9 @@ class BahanBakuMasukController extends Controller
 
     // public function edit($id)
     // {
-    //     $bahanbaku_masuk = BahanBakuMasuk::findOrFail($id);
+    //     $bahanbakumasuk = BahanBakuMasuk::findOrFail($id);
     //     $bahanbaku = BahanBaku::all();
-    //     return view("bahanbaku_masuk.edit", compact("bahanbaku_masuk", "bahanbaku"));
+    //     return view(".bahanbakumasuk.edit", compact("bahanbakumasuk", "bahanbaku"));
     // }
 
     // public function update(Request $request, $id)

@@ -2,12 +2,20 @@
 <html lang="en">
 
 <head>
+
+
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title> @yield('title')</title>
+
+    <link rel="icon" type="image/jpg" sizes="16x16" href="/favicon.jpg">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+    <title>@yield('title', 'Beranda')</title>
     <link href="{{ asset('asset/vendor/select2/dist/css/select2.min.css') }}" rel="stylesheet">
     <link href="{{ asset('asset/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
     <link
@@ -16,37 +24,68 @@
     <!-- Custom styles for this template-->
     <link href="{{ asset('asset/css/sb-admin-2.min.css') }}" rel="stylesheet">
     <link href="{{ asset('asset/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
-    {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script> --}}
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    @yield('meta')
+    {{-- swal --}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.33.1/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+        integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.33.1/sweetalert2.min.js"></script>
+
+
+
+
+    <!-- End Mapbox -->
     @yield('css')
     <style>
-        .sidebar li a:hover {
-            background: rgba(168, 168, 188, 0.535);
+        a.nav-link span,
+        a.nav-link i {
+            font-weight: 700;
+            color: black;
+
         }
 
-        .sidebar li a.active {
-            background: rgba(168, 168, 188, 0.535);
+        ul li a.active {
+            background: rgb(232, 232, 242);
+            border-radius: 8px;
+
+        }
+
+        a.nav-link:hover {
+            background: rgb(232, 232, 242);
+            border-radius: 8px;
+        }
+
+        .paginate_button .page-item .active {
+            background-color: #663300 !important;
+            color: white;
         }
     </style>
 </head>
 
 <body id="page-top">
-
+    @php
+        setlocale(LC_TIME, 'id_ID');
+        \Carbon\Carbon::setLocale('id');
+    @endphp
     <!-- Page Wrapper -->
     <div id="wrapper">
 
         <!-- Sidebar -->
-        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-primary  accordion" id="accordionSidebar">
+        <ul class="navbar-nav fixed sidebar accordion" id="accordionSidebar"
+            style="background: hsl(0, 0%, 100%); color:#663300;">
 
-            <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center"
-                href="{{ route('dashboard.index') }}">
-                <div class="sidebar-brand-icon rotate-n-0">
-                    <img src="{{ asset('asset/img/logos.jpg') }}" width="60">
-                </div>
-                <div class="sidebar-brand-text text-white mx-2">CV Rapopo</div>
-            </a>
+            <div>
+
+                <!-- Sidebar - Brand -->
+                <a class="sidebar-brand text-dark font-weight-bold d-flex align-items-center justify-content-center"
+                    href="/" style="margin-top:20px">
+                    <div class="sidebar-brand-icon ">
+                        <img src="{{ asset('asset/img/coffe.jpg') }}" width="120">
+                        {{-- <i class="fa fa-home"></i> --}}
+                    </div>
+
+                </a>
+                <p class="ml-3 mt-4 text-center"><b> AreaKongkow </b></p>
+            </div>
 
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
@@ -54,189 +93,84 @@
             <!-- Divider -->
             <hr class="sidebar-divider">
 
-            <!-- Nav Item - Pages Collapse Menu -->
-
-            @hasanyrole('Admin|Direktur|Produksi')
-                <li class="nav-item">
-                    <a class="nav-link collapsed text-white {{ request()->is('dashboard') ? 'active' : '' }}"
-                        href="{{ route('dashboard.index') }}">
-                        <i class="fas fa-fw fa-tachometer-alt"></i>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-            @endhasanyrole
             <li class="nav-item">
-                <a class="nav-link collapsed text-white" href="#" data-toggle="collapse"
-                    data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
-                    <i class="fas  fa-fw fa-table"></i>
+                <a class="nav-link text-white" href="{{ route('dashboard.index') }}">
+                    <i class="fa fa-tachometer-alt"></i>
+                    <span>Dashboard</span></a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link collapsed text-dark" data-toggle="collapse" data-target="#collapsePages1"
+                    aria-expanded="true" aria-controls="collapsePages1">
+                    <i class="fas fa-folder"></i>
                     <span>Data Master</span>
                 </a>
-                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        @hasanyrole('Admin|Direktur|Gudang')
-                            <a class="collapse-item fas fa-archive {{ request()->is('bahan-baku') ? 'active' : '' }}"
-                                href="{{ route('bahan-baku.index') }}">
-                                Bahan Baku
-                            </a>
-                            <a class="collapse-item fas fa-clipboard-check {{ request()->is('finish-good') ? 'active' : '' }}"
-                                href="{{ route('finish-good.index') }}">
-                                Barang Finish Good</a>
-                        @endhasanyrole
-                        @hasanyrole('Admin|Direktur')
-                            <a class="collapse-item fas fa-car {{ request()->is('supplier') ? 'active' : '' }}"
-                                href="{{ route('supplier.index') }}">
-                                Supplier
-                                <a class="collapse-item fas fa-digital-tachograph" href="{{ route('customer.index') }}">
-                                    Customer
-                                </a>
-                                <a class="collapse-item fas fa-users" href="{{ route('user.index') }}">
-                                    User</a>
-
-
-                        </div>
-                    </div>
-                </li>
-            @endhasanyrole
-            @hasanyrole('Admin|Direktur|Produksi')
-                <li class="nav-item">
-                    <a class="nav-link collapsed text-white" href="#" data-toggle="collapse"
-                        data-target="#collapsePages1" aria-expanded="true" aria-controls="collapsePages1">
-                        <i class="fas fa-fw fa-briefcase"></i>
-                        <span>Produksi</span>
-                    </a>
-
-                    <div id="collapsePages1" class="collapse" aria-labelledby="headingPages"
-                        data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item fas fa-hourglass-half {{ request()->is('jadwal-produksi') ? 'active' : '' }}"
-                                href="{{ route('jadwal-produksi.index') }}">
-                                Jadwal Produksi</a>
-                            <a class="collapse-item fas fa-hands {{ request()->is('permintaan-bahan-baku') ? 'active' : '' }}"
-                                href="{{ route('permintaan-bahanbaku.index') }}">
-                                Permintaan Bahan Baku</a>
-                            <a class="collapse-item fas fa-box-open {{ request()->is('hasil-produksi') ? 'active' : '' }}"
-                                href="{{ route('pencatatan-produksi.index') }}">
-                                Hasil Produksi</a>
-                            <a class="collapse-item fas fa-hourglass-half {{ request()->is('cek-jadwalproduksi') ? 'active' : '' }}"
-                                href="{{ route('cek-jadwalproduksi.index') }}">
-                                Cek Jadwal Produksi</a>
-                        </div>
-                    </div>
-                </li>
-            @endhasanyrole
-            @hasanyrole('Admin|Direktur|Gudang')
-                <li class="nav-item">
-                    <a class="nav-link collapsed text-white" href="#" data-toggle="collapse"
-                        data-target="#collapsePages2" aria-expanded="true" aria-controls="collapsePage2">
-                        <i class="fas fa-fw fa-warehouse"></i>
-                        <span>Gudang</span>
-                    </a>
-                    <div id="collapsePages2" class="collapse" aria-labelledby="headingPages"
-                        data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-
-                            {{-- <a class="collapse-item fas fa-box" href="{{ route('stok.index') }}"> Stok
-                                Bahan Baku</a>
-                            <a class="collapse-item fas fa-check-double" href="{{ route('stokfinishgood.index') }}"> Stok
-                                Finish Good</a> --}}
-                            <a class="collapse-item fas fa-door-open {{ request()->is('bahanbaku-masuk') ? 'active' : '' }}"
-                                href="{{ route('bahanbaku-masuk.index') }}"> Bahan
-                                Baku Masuk</a>
-                            <a class="collapse-item fas fa-external-link-alt {{ request()->is('bahanbaku-keluar') ? 'active' : '' }}"
-                                href="{{ route('bahanbaku-keluar.index') }}">
-                                Bahan Baku Keluar</a>
-
-                            <a class="collapse-item fas fa-hands {{ request()->is('cek-permintaan-bahanbaku') ? 'active' : '' }}"
-                                href="{{ route('cek-permintaan.index') }}">
-                                Permintaan Produksi</a>
-                        </div>
-                    </div>
-                </li>
-            @endhasanyrole
-            <li class="nav-item">
-                <a class="nav-link collapsed text-white" href="#" data-toggle="collapse"
-                    data-target="#collapsePages4" aria-expanded="true" aria-controls="collapsePage4">
-                    <i class="fas fa-fw fa-money-bill-wave"></i>
-                    <span>Transaksi</span>
-                </a>
-                <div id="collapsePages4" class="collapse" aria-labelledby="headingPages"
+                <div id="collapsePages1" class="collapse" aria-labelledby="headingPages"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        @hasanyrole('Admin|Direktur')
-                            <a class="collapse-item fas  fa-shopping-basket {{ request()->is('pembelian') ? 'active' : '' }}"
-                                href="{{ route('pembelian.index') }}">
-                                Pembelian </a>
-                            <a class="collapse-item fas fa-money-bill-alt {{ request()->is('penjualan') ? 'active' : '' }}"
-                                href="{{ route('penjualan.index') }}">
-                                Penjualan </a>
-                        @endhasanyrole
-
-
-                    </div>
-                </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link collapsed text-white" href="#" data-toggle="collapse"
-                    data-target="#collapsePages3" aria-expanded="true" aria-controls="collapsePage3">
-                    <i class="fas fa-fw fa-file-pdf"></i>
-                    <span>Laporan</span>
-                </a>
-                <div id="collapsePages3" class="collapse" aria-labelledby="headingPages"
-                    data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        {{-- @hasanyrole('Admin|Direktur')
-                            <a class="collapse-item fas fa-arrow-circle-right" href="{{ route('laporan.bahanbaku') }}">
-                                Bahan Baku </a>
-                            <a class="collapse-item fas fa-arrow-circle-right" href="{{ route('laporan.finishgood') }}">
-                                Finish Good </a>
-                        @endhasanyrole --}}
-                        @hasanyrole('Admin|Direktur|Produksi')
-                            <a class="collapse-item fas fa-hands " href="{{ route('laporan.pencatatanproduksi') }}">
-                                Produksi </a>
-                            {{-- <a class="collapse-item fas fa-archive" href="{{ route('laporan.permintaanbahanbaku') }}">
-                            Permintaan Bahan Baku </a> --}}
-                        @endhasanyrole
-                        @hasanyrole('Admin|Direktur|Gudang')
-                            <a class="collapse-item fas fa-door-open" href="{{ route('laporan.bahanbaku_masuk') }}">
-                                Bahan Baku Masuk </a>
-                            <a class="collapse-item fas fa-external-link-alt"
-                                href="{{ route('laporan.bahanbaku_keluar') }}">
-                                Bahan Baku Keluar </a>
-                        @endhasanyrole
-                        @hasanyrole('Admin|Direktur')
-                            <a class="collapse-item fas fa-shopping-basket" href="{{ route('laporan.pembelian') }}">
-                                Pembelian </a>
-                            <a class="collapse-item fas fa-money-bill-alt" href="{{ route('laporan.penjualan') }}">
-                                Penjualan </a>
-                            <a class="collapse-item fas fa-book" href="{{ route('laporan.hutang') }}">
-                                Hutang </a>
-                            <a class="collapse-item fas fa-credit-card" href="{{ route('laporan.piutang') }}">
-                                Piutang </a>
-
-                            {{-- <a class="collapse-item fas fa-hourglass-half" href="{{ route('laporan.jadwalproduksi') }}">
-                                Jadwal Produksi </a>
-                            <a class="collapse-item fas fa-box" href="{{ route('laporan.stok') }}">
-                                Stok Bahan Baku </a>
-                            <a class="collapse-item fas fa-check-double" href="{{ route('laporan.stokfinishgood') }}">
-                                Stok Finsih Good </a> --}}
-                        @endhasanyrole
-
-
+                        <a class="collapse-item fas fa-arrow-circle-right" href="{{ route('menu.index') }}">
+                            Daftar Menu </a>
+                        <a class="collapse-item fas fa-arrow-circle-right" href="{{ route('kategori.index') }}">
+                            Kategori </a>
+                        <a class="collapse-item fas fa-arrow-circle-right" href="{{ route('meja.index') }}">
+                            Meja </a>
 
                     </div>
                 </div>
             </li>
 
-            <!-- Nav Item - Tables -->
+            <li class="nav-item">
+                <a class="nav-link collapsed text-dark" data-toggle="collapse" data-target="#collapsePages2"
+                    aria-expanded="true" aria-controls="collapsePages1">
+                    <i class="fas fa-utensils"></i>
+                    <span>Dapur</span>
+                </a>
+                <div id="collapsePages2" class="collapse" aria-labelledby="headingPages"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item fas fa-arrow-circle-right" href="{{ route('bahan-baku.index') }}">
+                            Stok Bahan Baku </a>
+                        <a class="collapse-item fas fa-arrow-circle-right" href="{{ route('bahanbaku-masuk.index') }}">
+                            Bahan Baku Masuk </a>
+                        <a class="collapse-item fas fa-arrow-circle-right"
+                            href="{{ route('bahanbaku-terpakai.index') }}">
+                            Bahan Baku Terpakai </a>
+                        <a class="collapse-item fas fa-arrow-circle-right" href="{{ route('ingredients.index') }}">
+                            Bahan Bahan Menu </a>
+                    </div>
+                </div>
+            </li>
+
+            {{-- @role('Admin') --}}
+
+            <li class="nav-item">
+                <a class="nav-link text-white {{ request()->is('user') ? 'active' : '' }}"
+                    href="{{ route('user.index') }}">
+                    <i class="fas fa-user-alt "></i>
+                    <span>User</span></a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link text-white {{ request()->is('order') ? 'active' : '' }}"
+                    href="{{ route('order.index') }}">
+                    <i class="fas fa-cash-register"></i>
+                    <span>Kasir</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white {{ request()->is('pembayaran') ? 'active' : '' }}"
+                    href="{{ route('order.index') }}">
+                    <i class="fas fa-money-check-alt"></i>
+                    <span>Transaksi</span></a>
+            </li>
 
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 
             <!-- Sidebar Toggler (Sidebar) -->
-            <div class="text-center d-none d-md-inline">
+            {{-- <div class="text-center d-none d-md-inline">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
-            </div>
+            </div> --}}
 
         </ul>
         <!-- End of Sidebar -->
@@ -248,11 +182,12 @@
             <div id="content">
 
                 <!-- Topbar -->
-                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                <nav class="navbar navbar-expand  topbar bg-white static-top shadow"
+                    style="margin:10px 20px;border-radius:8px;background-color:rgb(255, 255, 255)!important;">
 
                     <!-- Sidebar Toggle (Topbar) -->
-                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                        <i class="fa fa-bars"></i>
+                    <button id="sidebarToggleTop" class="btn btn-linkrounded-circle mr-3">
+                        <i class="fas fa-bars"></i>
                     </button>
 
                     <!-- Topbar Search -->
@@ -260,7 +195,7 @@
                         class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
                             <div class="input-group-append">
-                                <h4>Sistem Informasi Produksi</h4>
+                                <h4 class="text-dark font-weight-bold">Coffe Shop AreaKongkow </h4>
                             </div>
                         </div>
                     </form>
@@ -268,9 +203,9 @@
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
 
-                        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+                        <!-- Nav Item - 2`3 Dropdown (Visible Only XS) -->
                         <li class="nav-item dropdown no-arrow d-sm-none">
-                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
+                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="425"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-search fa-fw"></i>
                             </a>
@@ -299,12 +234,12 @@
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span
                                     class="mr-2 d-none d-lg-inline text-gray-600 small">{{ Auth::user()->name }}</span>
-                                <img class="img-profile rounded-circle" src="{{ asset('asset/img/avatar2.png') }}">
+                                <img class="img-profile rounded-circle" src="{{ asset('/asset/img/coffe.jpg') }}">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item" href="{{ route('user.show', [Auth::user()->id]) }}">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
                                 </a>
@@ -321,7 +256,7 @@
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
-                <div class="container-fluid">
+                <div class="container-fluid mb-4">
 
                     <!-- DataTales Example -->
                     <!-- Page Heading -->
@@ -334,11 +269,10 @@
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <footer class="sticky-footer bg-white">
+            <footer class="sticky-footer">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Create By: Adam Webdev<br>Copyright &copy; CV Rapopo
-                            {{ \Carbon\Carbon::now()->year }} </span>
+                        <span>Dibuat oleh Pebriyanti<br> &copy; Coffeshop AreaKongkow, Indonesia. </span>
                     </div>
                 </div>
             </footer>
@@ -366,7 +300,7 @@
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <div class="modal-body">Pilih " Logout" apabila ingin keluar aplikasi</div>
+                <div class="modal-body">Pilih "Logout" apabila ingin keluar aplikasi</div>
                 <div class="modal-footer">
                     <a class="btn btn-primary" href="{{ route('logout') }}"
                         onclick="event.preventDefault();document.getElementById('logout-form').submit();">
@@ -382,25 +316,28 @@
     </div>
 
     <!-- Bootstrap core JavaScript-->
-    <script src={{ asset('asset/vendor/jquery/jquery.min.js') }}></script>
-    <script src={{ asset('asset/vendor/bootstrap/js/bootstrap.bundle.min.js') }}></script>
+    <script src="{{ asset('asset/vendor/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('asset/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
     <!-- Core plugin JavaScript-->
-    <script src={{ asset('asset/vendor/jquery-easing/jquery.easing.min.js') }}></script>
+    <script src="{{ asset('asset/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src={{ asset('asset/js/sb-admin-2.min.js') }}></script>
+    <script src="{{ asset('asset/js/sb-admin-2.min.js') }}"></script>
 
     <!-- Page level plugins -->
-    <script src={{ asset('asset/vendor/chart.js/Chart.min.js') }}></script>
-    <script src={{ asset('asset/vendor/datatables/jquery.dataTables.min.js') }}></script>
-    <script src={{ asset('asset/vendor/datatables/dataTables.bootstrap4.min.js') }}></script>
+    <script src="{{ asset('asset/vendor/chart.js/Chart.min.js') }}"></script>
+    <script src="{{ asset('asset/vendor/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('asset/vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
 
     <!-- Page level custom scripts -->
-    <script src={{ asset('asset/js/demo/chart-area-demo.js') }}></script>
-    <script src={{ asset('asset/js/demo/chart-pie-demo.js') }}></script>
-    <script src={{ asset('asset/js/demo/datatables-demo.js') }}></script>
+    <script src="{{ asset('asset/js/demo/chart-area-demo.js') }}"></script>
+    <script src="{{ asset('asset/js/demo/chart-pie-demo.js') }}"></script>
+    <script src="{{ asset('asset/js/demo/datatables-demo.js') }}"></script>
     <script src="{{ asset('asset/vendor/select2/dist/js/select2.min.js') }}"></script>
+
+
+
     @yield('scripts')
 
 </body>

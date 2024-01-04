@@ -16,9 +16,9 @@
 @endsection
 @section('content')
     <div class="card p-4">
-        <h5>Selamat Datang <b>{{ Auth::user()->name }} </b> di Dashboard Sistem Informasi Produksi</h5>
+        <h5>Selamat Datang <b>{{ Auth::user()->name }} </b> di Dashboard </h5>
         <hr>
-        <div class="row ">
+        {{-- <div class="row ">
             <div class="col-md-3">
                 <div class="card p-2 cardMenu">
                     <div class="d-flex align-items-center">
@@ -138,8 +138,8 @@
                 </div>
             </div>
         </div>
-    </div>
-    {{-- <div class="row align-items-center">
+    </div> --}}
+        {{-- <div class="row align-items-center">
         <div class="col-md-4 ml-4">
             <img width="400px" height="400px" src="{{asset("asset/img/company.svg")}}" alt="">
         </div>
@@ -156,51 +156,51 @@
 
         </div>
     </div> --}}
-@endsection
+    @endsection
 
-@section('scripts')
-    <script>
-        $(document).ready(function() {
-            $('#bulan, #tahun').on('change', function() {
-                var bulan = $('#bulan').val()
-                var tahun = $('#tahun').val()
-                console.log(bulan)
-                console.log(tahun)
-                $.ajax({
-                    type: 'GET',
-                    url: "{{ route('produkterlaris') }}",
-                    data: {
-                        bulan: bulan,
-                        tahun: tahun
-                    },
-                    success: function(data) {
-                        console.log("data : ", data)
+    {{-- @section('scripts')
+        <script>
+            $(document).ready(function() {
+                $('#bulan, #tahun').on('change', function() {
+                    var bulan = $('#bulan').val()
+                    var tahun = $('#tahun').val()
+                    console.log(bulan)
+                    console.log(tahun)
+                    $.ajax({
+                        type: 'GET',
+                        url: "{{ route('produkterlaris') }}",
+                        data: {
+                            bulan: bulan,
+                            tahun: tahun
+                        },
+                        success: function(data) {
+                            console.log("data : ", data)
 
-                        if (data.length == 0) {
-                            $('#data-produk').html(`
+                            if (data.length == 0) {
+                                $('#data-produk').html(`
                                <tr align="center"><td colspan="5">Data tidak ditemukan!</td></tr>
                             `)
-                        } else {
-                            $('#data-produk').html(
-                                data.map((item, index) => {
-                                    return `<tr>
+                            } else {
+                                $('#data-produk').html(
+                                    data.map((item, index) => {
+                                        return `<tr>
                                                 <td>${index+1}</td>
                                                 <td>${item.nama_fg}</td>
                                                 <td>${item.jumlah_penjualan}</td>
                                                 <td>${item.bulan}</td>
                                                 <td>${item.tahun}</td>
                                             </tr>`
-                                })
+                                    })
 
-                            )
+                                )
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error(xhr.responseText)
                         }
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(xhr.responseText)
-                    }
+                    })
                 })
-            })
 
-        })
-    </script>
-@endsection
+            })
+        </script>
+    @endsection --}}

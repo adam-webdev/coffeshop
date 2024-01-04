@@ -14,16 +14,16 @@ class BahanBakuKeluarController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function __construct()
-    {
-        $this->middleware('role:Admin|Direktur|Gudang');
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('role:Admin|Direktur|Gudang');
+    // }
 
     public function index()
     {
         $bahanbaku = BahanBaku::all();
-        $bahanbaku_keluar = BahanBakuKeluar::with('bahanbaku')->get();
-        return view('gudang.bahanbaku_keluar.index', compact("bahanbaku_keluar", "bahanbaku"));
+        $bahanbakuterpakai = BahanBakuKeluar::with('bahanbaku')->get();
+        return view('dapur.bahanbakuterpakai.index', compact("bahanbakuterpakai", "bahanbaku"));
     }
 
     public function create()
@@ -34,20 +34,19 @@ class BahanBakuKeluarController extends Controller
 
     public function store(Request $request)
     {
-        $bahanbaku_keluar = new BahanBakuKeluar;
-        $bahanbaku_keluar->bahanbaku_id = $request->bahanbaku_id;
-        $bahanbaku_keluar->jumlah = $request->jumlah;
-        $bahanbaku_keluar->tanggal = $request->tanggal;
-        $bahanbaku = BahanBaku::select("jumlah_material")->where("id", $request->bahanbaku_id)->get();
-        $bahanbaku = $bahanbaku[0]->jumlah_material;
+        $bahanbakuterpakai = new BahanBakuKeluar;
+        $bahanbakuterpakai->bahanbaku_id = $request->bahanbaku_id;
+        $bahanbakuterpakai->jumlah = $request->jumlah;
+        $bahanbakuterpakai->tanggal = $request->tanggal;
+        $bahanbaku = BahanBaku::select("stok")->where("id", $request->bahanbaku_id)->first();
 
         if ($request->jumlah <= $bahanbaku) {
-            $bahanbaku_keluar->save();
+            $bahanbakuterpakai->save();
             Alert::success("Tersimpan", "Data Berhasil Disimpan");
-            return redirect()->route('bahanbaku-keluar.index');
+            return redirect()->route('bahanbaku-terpakai.index');
         } else {
             Alert::error("Gagal", "Jumlah barang tidak cukup maksimal {{$bahanbaku}} ");
-            return redirect()->route('bahanbaku-keluar.index');
+            return redirect()->route('bahanbaku-terpakai.index');
         }
     }
 
@@ -76,9 +75,9 @@ class BahanBakuKeluarController extends Controller
 
     public function delete($id)
     {
-        $bahanbaku_keluar = BahanBakuKeluar::findOrFail($id);
-        $bahanbaku_keluar->delete();
+        $bahanbaku_terpakai = BahanBakuKeluar::findOrFail($id);
+        $bahanbaku_terpakai->delete();
         Alert::success("Terhapus", "Data Berhasil Dihapus");
-        return redirect()->route('bahanbaku-keluar.index');
+        return redirect()->route('bahanbaku-terpakai.index');
     }
 }

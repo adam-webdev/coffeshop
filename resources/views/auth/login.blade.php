@@ -15,9 +15,18 @@
         rel="stylesheet">
     <!-- Custom styles for this template-->
     <link href="{{ asset('asset/css/sb-admin-2.min.css') }}" rel="stylesheet">
+
+    <style>
+        .bg {
+            background: url("{{ asset('/asset/img/bg.jpg') }}") no-repeat;
+            background-position: center;
+            background-size: 100%;
+            object-fit: cover;
+        }
+    </style>
 </head>
 
-<body class="bg-gradient-primary">
+<body class="bg-gradient-primary bg">
     <div class="container">
         <!-- Outer Row -->
         <div class="row justify-content-center">
@@ -30,9 +39,8 @@
                             <div class="col-lg-20">
                                 <div class="p-5">
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Sistem Informasi Produksi<br>CV Mutiara
-                                            Kencana<br>
-                                            <br><img src="{{ asset('asset/img/logos.jpg') }}" width="160">
+                                        <h1 class="h4 text-gray-900 mb-4">Coffe Shop<br>AreaKongkow<br>
+                                            <br><img src="{{ asset('asset/img/coffe.jpg') }}" width="160">
                                         </h1>
                                     </div>
                                     <form method="POST" action="{{ route('login') }}">
@@ -66,7 +74,7 @@
                                                 @enderror
                                             </div>
                                         </div>
-                                        <div class="form-group row">
+                                        {{-- <div class="form-group row">
                                             <div class="col-md-12 offset-md-12">
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="checkbox" name="remember"
@@ -76,10 +84,12 @@
                                                     </label>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                         <div class="form-group row mb-0">
-                                            <div class="col-md-12 offset-md-12">
-                                                <button type="submit" class="btn btn-primary">
+                                            <div class="col-md-12 ">
+                                                <button width="100%" type="submit"
+                                                    class="d-block btn  w-100 text-white"
+                                                    style="background-color: #663300!important">
                                                     {{ __('Login') }}
                                                 </button>
                                                 {{-- @if (Route::has('password.request'))
@@ -89,12 +99,12 @@
                                                 @endif --}}
                                             </div>
                                         </div>
-                                        <div class="form-group row mt-3">
+                                        {{-- <div class="form-group row mt-3">
                                             <div class="col-md-12 offset-md-12">
                                                 Belum Punya Akun ? <a href="{{ route('register') }}">Silahkan
                                                     Daftar.</a>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                     </form>
                                 </div>
                             </div>

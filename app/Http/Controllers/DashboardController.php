@@ -15,32 +15,32 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $penjualan_total = Penjualan::select('total')->sum('total');
-        $pembelian_total = Pembelian::select('total')->sum('total');
-        $hutang = Hutang::select('total')->sum('total');
-        $piutang = Piutang::select('total')->sum('total');
+        // $penjualan_total = Penjualan::select('total')->sum('total');
+        // $pembelian_total = Pembelian::select('total')->sum('total');
+        // $hutang = Hutang::select('total')->sum('total');
+        // $piutang = Piutang::select('total')->sum('total');
 
 
 
-        $produk_terlaris = DB::table('penjualan_details')
-            ->join('finish_goods', 'penjualan_details.finishgood_id', '=', 'finish_goods.id')
-            ->select(
-                'finish_goods.nama_fg',
-                DB::raw('YEAR(penjualan_details.tanggal_penjualan) as tahun'),
-                DB::raw('MONTH(penjualan_details.tanggal_penjualan) as bulan'),
-                DB::raw('SUM(penjualan_details.jumlah) as jumlah_penjualan')
-            )
-            // ->whereYear('penjualan_details.tanggal_penjualan', Carbon::now()->year)
-            // ->whereMonth('penjualan_details.tanggal_penjualan', Carbon::now()->month)
-            ->groupBy('finish_goods.id', 'finish_goods.nama_fg', 'tahun', 'bulan')
-            ->orderBy('tahun', 'desc')
-            ->orderBy('bulan', 'desc')
-            ->orderBy('jumlah_penjualan', 'desc')
-            ->take(5)
-            ->get();
+        // $produk_terlaris = DB::table('penjualan_details')
+        //     ->join('finish_goods', 'penjualan_details.finishgood_id', '=', 'finish_goods.id')
+        //     ->select(
+        //         'finish_goods.nama_fg',
+        //         DB::raw('YEAR(penjualan_details.tanggal_penjualan) as tahun'),
+        //         DB::raw('MONTH(penjualan_details.tanggal_penjualan) as bulan'),
+        //         DB::raw('SUM(penjualan_details.jumlah) as jumlah_penjualan')
+        //     )
+        //     // ->whereYear('penjualan_details.tanggal_penjualan', Carbon::now()->year)
+        //     // ->whereMonth('penjualan_details.tanggal_penjualan', Carbon::now()->month)
+        //     ->groupBy('finish_goods.id', 'finish_goods.nama_fg', 'tahun', 'bulan')
+        //     ->orderBy('tahun', 'desc')
+        //     ->orderBy('bulan', 'desc')
+        //     ->orderBy('jumlah_penjualan', 'desc')
+        //     ->take(5)
+        //     ->get();
 
         // ddd($produk_terlaris);
-        return view('dashboard', compact('penjualan_total', 'pembelian_total', 'hutang', 'piutang', 'produk_terlaris'));
+        return view('dashboard');
     }
     public function getByBulanTahun(Request $request)
     {

@@ -5,15 +5,19 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use RealRashid\SweetAlert\Facades\Alert;
+use Spatie\Permission\Contracts\Role;
+use Spatie\Permission\Models\Role as ModelsRole;
 
 class UserController extends Controller
 {
     public function index()
     {
         $users = User::with('roles')->get();
-        return view('admin.users.index', ['users'  => $users]);
+        $roles = ModelsRole::pluck('name');
+        return view('admin.users.index', ['users'  => $users, 'roles' => $roles]);
     }
 
     /**
@@ -37,23 +41,25 @@ class UserController extends Controller
         // $pass = $request->password;
         // $cpass = $request->cpassword;
 
-        $validator = Validator::make($request->all(), [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8'],
-        ]);
+        // $validator = Validator::make($request->all(), [
+        //     'name' => ['required', 'string', 'max:255'],
+        //     'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+        //     'password' => ['required', 'string', 'min:8'],
+        // ]);
 
-        if ($validator->fails()) {
-            return redirect()->route('user.index')
-                ->withErrors($validator)
-                ->withInput();
-        }
+        // if ($validator->fails()) {
+        //     return redirect()->route('user.index')
+        //         ->withErrors($validator)
+        //         ->withInput();
+        // }
         $save_user = new User;
         $save_user->name = $request->name;
         $save_user->email = $request->email;
-        $save_user->password = \Hash::make($request->password);
-        $save_user->save();
+        $save_user->jenis_kelamin = $request->jenis_kelamin;
+        $save_user->no_hp = $request->no_hp;
+        $save_user->password = Hash::make($request->password);
         $save_user->assignRole($request->roles);
+        $save_user->save();
         Alert::success('Berhasil', 'User Berhasil Ditambahkan');
         return redirect()->route('user.index');
     }
@@ -77,8 +83,10 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $user_edit = User::findOrFail($id);
-        return view('admin.users.edit', ['user'  => $user_edit]);
+        $roles = ModelsRole::pluck('name');
+        // $user_edit =  User::findOrFail($id);
+        $user_edit = User::with('roles')->where('id', $id)->first();
+        return view('admin.users.edit', ['user'  => $user_edit, "roles" => $roles]);
     }
 
     /**
@@ -90,24 +98,21 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8'],
-        ]);
 
-        if ($validator->fails()) {
-            return redirect()->route('user.index')
-                ->withErrors($validator)
-                ->withInput();
-        }
         $save_user =  User::findOrFail($id);
         $save_user->name = $request->name;
         $save_user->email = $request->email;
-        $save_user->password = \Hash::make($request->password);
+        $save_user->jenis_kelamin = $request->jenis_kelamin;
+        $save_user->no_hp = $request->no_hp;
+        $save_user->password = Hash::make($request->password);
+
+        $roleNames = $request->roles;
+        $roleIds = ModelsRole::where('name', $roleNames)->pluck('id')->toArray();
+
+        // Sync the roles
+        $save_user->roles()->sync($roleIds);
         $save_user->save();
-        $save_user->assignRole($request->roles);
-        Alert::success('Berhasil', 'User Berhasil Ditambahkan');
+        Alert::success('Berhasil', 'User Berhasil Diubah');
         return redirect()->route('user.index');
     }
 

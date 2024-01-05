@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -12,5 +13,14 @@ class Order extends Model
     public function meja()
     {
         return $this->belongsTo(Meja::class);
+    }
+    public static function no_order()
+    {
+        $tahunSekarang = Carbon::now()->format("Y");
+        $bulanSekarang = Carbon::now()->format("m");
+        $jumlahOrder = Order::max('id');
+        $jumlahOrderIncrement = $jumlahOrder + 1;
+        $no_order = (string) 'Order/' . $tahunSekarang . $bulanSekarang . "/" . $jumlahOrderIncrement;
+        return $no_order;
     }
 }

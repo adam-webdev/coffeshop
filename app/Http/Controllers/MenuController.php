@@ -12,7 +12,7 @@ class MenuController extends Controller
 {
     public function index()
     {
-        $menu = Menu::get();
+        $menu = Menu::orderBy('id', 'desc')->get();
         $kategori = Kategori::all();
         return view('admin.menu.index', compact("menu", "kategori"));
     }

@@ -10,7 +10,7 @@ class MejaController extends Controller
 {
     public function index()
     {
-        $meja = Meja::get();
+        $meja = Meja::orderBy('id', 'desc')->get();
         return view('admin.meja.index', compact("meja"));
     }
 

@@ -1,7 +1,32 @@
 @extends('layouts.layout')
 @section('title', 'Menu')
 
+@section('css')
+    <style>
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            color: #fff;
+            background-color: #8B4513;
+            /* Warna coklat */
+            border-color: #8B4513;
+        }
 
+        /* Gaya untuk warna pagination coklat pada hover */
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+            color: #fff;
+            background-color: #A0522D;
+            /* Warna coklat tua pada hover */
+            border-color: #A0522D;
+        }
+
+        /* Gaya untuk warna pagination coklat pada current page */
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+            color: #fff;
+            background-color: #A0522D;
+            /* Warna coklat tua pada current page */
+            border-color: #A0522D;
+        }
+    </style>
+@endsection
 @section('content')
     @include('sweetalert::alert')
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -142,6 +167,8 @@
                 tags: true,
                 width: '100%'
             });
+            $('#example').DataTable();
+
         });
     </script>
 @endsection

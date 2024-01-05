@@ -11,7 +11,7 @@ class KategoriController extends Controller
 
     public function index()
     {
-        $kategori = Kategori::get();
+        $kategori = Kategori::orderBy('id', 'desc')->get()();
         return view('admin.kategori.index', compact("kategori"));
     }
 

@@ -22,7 +22,7 @@ class BahanBakuKeluarController extends Controller
     public function index()
     {
         $bahanbaku = BahanBaku::all();
-        $bahanbakuterpakai = BahanBakuKeluar::with('bahanbaku')->get();
+        $bahanbakuterpakai = BahanBakuKeluar::with('bahanbaku')->orderBy('id', 'desc')->get();
         return view('dapur.bahanbakuterpakai.index', compact("bahanbakuterpakai", "bahanbaku"));
     }
 

@@ -17,7 +17,7 @@ class BahanBakuMasukController extends Controller
     public function index()
     {
         $bahanbaku = Bahanbaku::all();
-        $bahanbakumasuk = BahanBakuMasuk::with('bahanbaku')->get();
+        $bahanbakumasuk = BahanBakuMasuk::with('bahanbaku')->orderBy('id', 'desc')->get();
         return view('dapur.bahanbakumasuk.index', compact("bahanbakumasuk", "bahanbaku"));
     }
 

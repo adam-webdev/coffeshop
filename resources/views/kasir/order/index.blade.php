@@ -53,6 +53,20 @@
             background-color: #663300;
             /* Warna latar belakang */
         }
+
+        .terisi {
+            background: rgb(189, 2, 2);
+            padding: 2px;
+            font-size: 11px;
+            color: white;
+        }
+
+        .kosong {
+            background: green;
+            padding: 2px;
+            font-size: 11px;
+            color: white;
+        }
     </style>
 @endsection
 
@@ -86,7 +100,9 @@
                 <hr>
                 <form action="{{ route('order.store') }}" method="POST">
                     @csrf
-
+                    <input type="hidden" name="no_order" value="{{ $no_order }}">
+                    <input type="hidden" name="total" id="total_order">
+                    <input type="hidden" name="waktu" value="{{ \Carbon\Carbon::now() }}">
                     <div id="order-summary">
                         {{-- <h2>Order Summary</h2> --}}
                         <ul style="margin-right: 25px">
@@ -117,7 +133,9 @@
                             <select id="selectInput" name="meja_id" class="form-control select">
                                 <option value="">-- Pilih Meja --</option>
                                 @foreach ($meja as $meja)
-                                    <option value="{{ $meja->id }}">{{ $meja->nama }}</option>
+                                    <option value="{{ $meja->id }}" {{ $meja->status == 1 ? 'disabled' : '' }}>
+                                        {{ $meja->nama }} <p>{{ $meja->status == 1 ? 'Terisi' : 'Kosong' }}</p>
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
@@ -287,6 +305,8 @@
                 updateOrderSummary()
             })
 
+
+
             function formatCurrency(amount) {
                 // Fungsi ini mengonversi nilai ke dalam format mata uang yang sesuai
                 return new Intl.NumberFormat('id-ID', {
@@ -331,6 +351,7 @@
                 });
                 $("#total-quantity").text(totalQuantity);
                 $("#total-price").text(formatCurrency(totalPrice));
+                $("#total_order").val(totalPrice);
                 $(".bayar").text("  Bayar " + formatCurrency(totalPrice));
 
             }

@@ -14,6 +14,9 @@ class Order extends Model
     {
         return $this->belongsTo(Meja::class);
     }
+
+
+
     public static function no_order()
     {
         $tahunSekarang = Carbon::now()->format("Y");

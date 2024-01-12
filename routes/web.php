@@ -51,6 +51,8 @@ Route::get('/order/hapus/{id}', [OrderController::class, "delete"]);
 // pembayaran
 Route::resource('/pembayaran', PembayaranController::class);
 Route::get('/pembayaran/hapus/{id}', [PembayaranController::class, "delete"]);
+Route::get('/pembayaran/order/{id}', [PembayaranController::class, "order"])->name('pembayaran.order');
+Route::get('/pembayaran/sukses/{id}', [PembayaranController::class, "sukses"])->name('pembayaran.sukses');
 
 // ingredients
 Route::resource('/ingredients', IngredientsController::class);

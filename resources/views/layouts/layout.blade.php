@@ -58,6 +58,10 @@
             background-color: #663300 !important;
             color: white;
         }
+
+        .select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
+            background-color: #663300;
+        }
     </style>
 </head>
 

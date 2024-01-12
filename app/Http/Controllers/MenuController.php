@@ -30,8 +30,6 @@ class MenuController extends Controller
         // $request->validate([
         //     'foto' => 'required|file|mimes:jpeg,png,jpg,gif|size:5000'
         // ]);
-
-
         $foto = $request->file('foto');
         if ($foto) {
             $originalName = $foto->getClientOriginalName();
@@ -55,7 +53,6 @@ class MenuController extends Controller
     {
         $menu = Menu::findOrFail($id);
         $kategori = Kategori::all();
-
         return view("admin.menu.edit", compact('menu', 'kategori'));
     }
 
@@ -65,6 +62,7 @@ class MenuController extends Controller
         // $request->validate([
         //     'foto' => 'file|mimetypes:image/jpeg,image/png,image/jpg,image/gif|'
         // ]);
+
         $menu = Menu::findOrFail($id);
         $inputfoto = $request->file('foto');
         if ($inputfoto) {
@@ -86,7 +84,6 @@ class MenuController extends Controller
         $menu->foto = $fotoMenu;
         $menu->status = $request->status;
         $menu->save();
-
         Alert::success('Terupdate', 'Data Berhasil Diupdate');
         return redirect()->route('menu.index');
     }

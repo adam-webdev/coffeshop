@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Meja;
+use App\Models\Menu;
+use App\Models\Order;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -11,10 +14,10 @@ class HomeController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('auth');
+    // }
 
     /**
      * Show the application dashboard.
@@ -23,6 +26,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $menu = Menu::orderBy('id', 'desc')->get();
+        $meja = Meja::get();
+        $no_order = Order::no_order();
+        return view('layouts.home', compact('menu', 'no_order', 'meja'));
     }
 }

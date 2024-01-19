@@ -24,7 +24,7 @@
 
 
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-4 mt-2">
             <div class="card ">
                 <h5 class="pt-4 pl-2">Tambah Bahan Baku</h5>
                 <form action="{{ route('bahan-baku.store') }}" method="POST">
@@ -78,7 +78,7 @@
 
         </div>
 
-        <div class="col-md-8">
+        <div class="col-md-8 mt-2">
             <div class="card p-4">
 
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -119,12 +119,12 @@
                                             {{-- @role('Admin') --}}
                                             <a href="{{ route('bahan-baku.edit', [$b->id]) }}" data-toggle="tooltip"
                                                 title="Edit"
-                                                class="d-none  d-sm-inline-block btn btn-sm btn-secondary shadow-sm">
+                                                class=" mt-2 d-sm-inline-block btn btn-sm btn-secondary shadow-sm">
                                                 <i class="fas fa-edit fa-sm text-white-50"></i>
                                             </a>
                                             <a href="/bahan-baku/hapus/{{ $b->id }}" data-toggle="tooltip"
                                                 title="Hapus" onclick="return confirm('Yakin Ingin menghapus data?')"
-                                                class="d-none d-sm-inline-block btn btn-sm btn-danger shadow-sm"
+                                                class="mt-2 d-sm-inline-block btn btn-sm btn-danger shadow-sm"
                                                 style="background-color: #663300;">
                                                 <i class="fas fa-trash-alt fa-sm text-white-50"></i>
                                             </a>

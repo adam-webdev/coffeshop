@@ -11,7 +11,8 @@ class PembayaranController extends Controller
 {
     public function index()
     {
-        return view('pembayaran.index');
+        $transaksi = Pembayaran::with(['order', 'user'])->orderBy('id', 'desc')->get();
+        return view('kasir.pembayaran.index', compact('transaksi'));
     }
 
     public function order($id)
@@ -39,5 +40,11 @@ class PembayaranController extends Controller
     public function sukses($id)
     {
         return view('kasir.pembayaran.sukses', compact('id'));
+    }
+    public function cetak_struk($id)
+    {
+        $transaksi = Pembayaran::with(['order.orderdetail.menu', 'user'])->where('id', $id)->first();
+        // ddd($transaksi);
+        return view('kasir.pembayaran.struk', compact('transaksi'));
     }
 }

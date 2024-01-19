@@ -25,6 +25,78 @@
             /* Warna coklat tua pada current page */
             border-color: #A0522D;
         }
+
+        /* toast */
+        #snackbar {
+            visibility: hidden;
+            min-width: 250px;
+            margin-left: -125px;
+            background-color: #ffd6ad;
+            color: #663300;
+            font-weight: bold;
+            text-align: center;
+            border-radius: 20px;
+            padding: 8px;
+            position: fixed;
+            z-index: 1;
+            left: 50%;
+            bottom: 30px;
+            font-size: 17px;
+        }
+
+        #snackbar.show {
+            visibility: visible;
+            -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+
+        @-webkit-keyframes fadein {
+            from {
+                bottom: 0;
+                opacity: 0;
+            }
+
+            to {
+                bottom: 30px;
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadein {
+            from {
+                bottom: 0;
+                opacity: 0;
+            }
+
+            to {
+                bottom: 30px;
+                opacity: 1;
+            }
+        }
+
+        @-webkit-keyframes fadeout {
+            from {
+                bottom: 30px;
+                opacity: 1;
+            }
+
+            to {
+                bottom: 0;
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeout {
+            from {
+                bottom: 30px;
+                opacity: 1;
+            }
+
+            to {
+                bottom: 0;
+                opacity: 0;
+            }
+        }
     </style>
 @endsection
 @section('content')
@@ -43,7 +115,7 @@
 
     <!-- Modal -->
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-4 mt-2">
             <div class="card ">
                 <h5 class="pt-4 pl-2">Tambah Menu</h5>
                 <form action="{{ route('menu.store') }}" method="POST" enctype="multipart/form-data">
@@ -97,7 +169,7 @@
 
         </div>
 
-        <div class="col-md-8">
+        <div class="col-md-8 mt-2">
             <div class="card p-4">
 
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -138,12 +210,12 @@
                                             @role('Admin')
                                                 <a href="{{ route('menu.edit', [$m->id]) }}" data-toggle="tooltip"
                                                     title="Edit"
-                                                    class="d-none  d-sm-inline-block btn btn-sm btn-secondary shadow-sm">
+                                                    class="mt-2 d-sm-inline-block btn btn-sm btn-secondary shadow-sm">
                                                     <i class="fas fa-edit fa-sm text-white"></i>
                                                 </a>
                                                 <a href="/menu/hapus/{{ $m->id }}" data-toggle="tooltip" title="Hapus"
                                                     onclick="return confirm('Yakin Ingin menghapus data?')"
-                                                    class="d-none d-sm-inline-block btn btn-sm text-white shadow-sm"
+                                                    class="mt-2 d-sm-inline-block btn btn-sm text-white shadow-sm"
                                                     style="background-color: #663300;">
                                                     <i class="fas fa-trash-alt fa-sm text-white"></i>
                                                 </a>

@@ -45,7 +45,7 @@
             margin-top: 10px;
             display: block;
             padding: 8px;
-            background-color: #4CAF50;
+            background-color: #aaddbd;
             color: white;
             border: none;
             border-radius: 4px;
@@ -53,7 +53,7 @@
         }
 
         .total {
-            background: rgb(1, 147, 1);
+            background: #b5ffd0;
             padding: 10px 20px;
             display: flex;
             justify-content: center;
@@ -63,16 +63,20 @@
         .total p {
             font-size: 20px;
             font-weight: bold;
-            color: white;
+            color: #00AA28;
+        }
+
+        .bayar {
+            padding: 14px 0;
+            font-size: 18px;
+            font-weight: bold;
+            text-transform: uppercase;
         }
     </style>
 @endsection
 
 @section('content')
-    @php
-        setlocale(LC_TIME, 'id_ID');
-        \Carbon\Carbon::setLocale('id');
-    @endphp
+
     @include('sweetalert::alert')
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Pembayaran </h1>
@@ -88,7 +92,9 @@
 
     <!-- Modal -->
     <div class="row">
-        <div class="col-lg-5 col-md-10 col-sm-12">
+
+
+        <div class="col-lg-5 col-md-12 col-sm-12">
             <div class="card ">
                 {{-- <h5 class="pt-4 pl-2 text-center">Order</h5> --}}
 
@@ -99,20 +105,25 @@
                         <p>Total @currency($order->total)</p>
                     </div>
                     <div class="mt-2 px-4 d-flex justify-content-between align-items-center">
-                        <p>No Order : {{ $order->no_order }}</p>
-                        <p>Waktu Pesan : {{ \Carbon\Carbon::parse($order->waktu)->isoFormat('dddd, D MMMM Y, HH:mm') }}</p>
+                        <p> {{ $order->no_order }}</p>
+                        <p>
+                            @customDateFormat($order->waktu)</p>
                     </div>
                     <div class="form-group my-2 px-4">
+                        <label for="uang">Uang Cash :</label>
                         <input type="number" name="uang" id="uang" placeholder="Masukan uang..." required
                             class="form-control py-4">
                     </div>
                     <div class="form-group my-2 px-4">
+                        <label for="kembalian">Kembalian :</label>
                         <input type="number" readonly id="kembalian" name="kembalian" placeholder="Kembalian..."
                             class="form-control py-4">
                     </div>
                     <div class="form-group my-2 px-4">
-                        <button type="submit" class="d-block w-100 mt-3  bayar btn btn-primary"
-                            style="background-color: #663300;" disabled>Proses</button>
+                        <button type="submit" class=" w-100 mt-3  bayar btn btn-primary" style="background-color: #663300;"
+                            disabled>Proses</button>
+                        <button type="button" class="mt-2 w-100  btn btn-danger" onclick="history.go(-1)">
+                            Batal</button>
                     </div>
 
                     <input type="hidden" name="order_id" value="{{ $order->id }}">
@@ -124,7 +135,6 @@
             </div>
 
         </div>
-
 
     </div>
     {{-- <div class="body">

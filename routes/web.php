@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\{BahanBakuController, BahanBakuKeluarController, BahanBakuMasukController, BillOfMaterialController, CustomerController, DashboardController, IngredientsController, KategoriController, LaporanController, MejaController, MenuController, OrderController, PembayaranController, UserController};
+use App\Http\Controllers\{BahanBakuController, BahanBakuKeluarController, BahanBakuMasukController, BillOfMaterialController, CustomerController, DashboardController, HomeController, IngredientsController, KategoriController, LaporanController, MejaController, MenuController, OrderController, PembayaranController, UserController};
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,50 +14,58 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('auth.login');
-});
+Route::get('/', [HomeController::class, 'index'])->name('home');
+
+// Route::get('/', function () {
+//     return view('home');
+// });
 
 Auth::routes();
-Route::resource('/dashboard', DashboardController::class);
-Route::get('/produk-telaris', [DashboardController::class, 'getByBulanTahun'])->name('produkterlaris');
 
-Route::resource('/bahan-baku', BahanBakuController::class);
-Route::get('/bahan-baku/hapus/{id}', [BahanBakuController::class, "delete"]);
+Route::middleware('auth')->group(function () {
+
+    Route::resource('/dashboard', DashboardController::class);
+    Route::get('/produk-telaris', [DashboardController::class, 'getByBulanTahun'])->name('produkterlaris');
+
+    Route::resource('/bahan-baku', BahanBakuController::class);
+    Route::get('/bahan-baku/hapus/{id}', [BahanBakuController::class, "delete"]);
 
 
-Route::resource('/bahanbaku-terpakai', BahanBakuKeluarController::class);
-Route::get('/bahanbaku-terpakai/hapus/{id}', [BahanBakuKeluarController::class, "delete"]);
+    Route::resource('/bahanbaku-terpakai', BahanBakuKeluarController::class);
+    Route::get('/bahanbaku-terpakai/hapus/{id}', [BahanBakuKeluarController::class, "delete"]);
 
-Route::resource('/bahanbaku-masuk', BahanBakuMasukController::class);
-Route::get('/bahanbaku-masuk/hapus/{id}', [BahanBakuMasukController::class, "delete"]);
+    Route::resource('/bahanbaku-masuk', BahanBakuMasukController::class);
+    Route::get('/bahanbaku-masuk/hapus/{id}', [BahanBakuMasukController::class, "delete"]);
 
-// user
-Route::resource('/user', UserController::class);
-Route::get('/user/hapus/{id}', [UserController::class, "delete"]);
+    // user
+    Route::resource('/user', UserController::class);
+    Route::get('/user/hapus/{id}', [UserController::class, "delete"]);
 
-// meja
-Route::resource('/meja', MejaController::class);
-Route::get('/meja/hapus/{id}', [MejaController::class, "delete"]);
-// kategori
-Route::resource('/kategori', KategoriController::class);
-Route::get('/kategori/hapus/{id}', [KategoriController::class, "delete"]);
-// menu
-Route::resource('/menu', MenuController::class);
-Route::get('/menu/hapus/{id}', [MenuController::class, "delete"]);
-// order
-Route::resource('/order', OrderController::class);
-Route::get('/order/hapus/{id}', [OrderController::class, "delete"]);
-// pembayaran
-Route::resource('/pembayaran', PembayaranController::class);
-Route::get('/pembayaran/hapus/{id}', [PembayaranController::class, "delete"]);
-Route::get('/pembayaran/order/{id}', [PembayaranController::class, "order"])->name('pembayaran.order');
-Route::get('/pembayaran/sukses/{id}', [PembayaranController::class, "sukses"])->name('pembayaran.sukses');
+    // meja
+    Route::resource('/meja', MejaController::class);
+    Route::get('/meja/hapus/{id}', [MejaController::class, "delete"]);
+    // kategori
+    Route::resource('/kategori', KategoriController::class);
+    Route::get('/kategori/hapus/{id}', [KategoriController::class, "delete"]);
+    // menu
+    Route::resource('/menu', MenuController::class);
+    Route::get('/menu/hapus/{id}', [MenuController::class, "delete"]);
+    // order
+    Route::resource('/order', OrderController::class);
+    Route::get('/order/hapus/{id}', [OrderController::class, "delete"]);
+    Route::post('/order-user', [OrderController::class, "order_user"])->name('order.user');
+    Route::get('/riwayat-order', [OrderController::class, "riwayat"])->name('order.riwayat');
+    // pembayaran
+    Route::resource('/pembayaran', PembayaranController::class);
+    Route::get('/pembayaran/hapus/{id}', [PembayaranController::class, "delete"]);
+    Route::get('/pembayaran/order/{id}', [PembayaranController::class, "order"])->name('pembayaran.order');
+    Route::get('/pembayaran/sukses/{id}', [PembayaranController::class, "sukses"])->name('pembayaran.sukses');
+    Route::get('/pembayaran/cetak/{id}', [PembayaranController::class, "cetak_struk"])->name('pembayaran.cetak');
 
-// ingredients
-Route::resource('/ingredients', IngredientsController::class);
-Route::get('/ingredients/hapus/{id}', [IngredientsController::class, 'delete']);
-
+    // ingredients
+    Route::resource('/ingredients', IngredientsController::class);
+    Route::get('/ingredients/hapus/{id}', [IngredientsController::class, 'delete']);
+});
 
 
 
@@ -119,5 +127,3 @@ Route::get('/ingredients/hapus/{id}', [IngredientsController::class, 'delete']);
 // Route::post('/laporan-stok', [LaporanController::class, 'stok'])->name('laporan.stok.print');
 // Route::get('/laporan-stokfinishgood', [LaporanController::class, 'view_stokfinishgood'])->name('laporan.stokfinishgood');
 // Route::post('/laporan-stokfinishgood', [LaporanController::class, 'stokfinishgood'])->name('laporan.stokfinishgood.print');
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

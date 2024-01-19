@@ -145,6 +145,8 @@ class CreateBahanBakusTable extends Migration
             $table->foreignId('menu_id')->constrained('menu')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('bahanbaku_id')->constrained('bahan_bakus')->onUpdate('cascade')->onDelete('cascade');
             $table->integer('jumlah');
+            $table->integer('porsi');
+            $table->string('keterangan');
             $table->timestamps();
         });
     }

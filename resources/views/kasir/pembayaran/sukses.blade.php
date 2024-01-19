@@ -48,7 +48,6 @@
 
     </div>
 
-
     <!-- Modal -->
     <div class="row">
         <div class="col-lg-5 col-md-10 col-sm-12">
@@ -58,17 +57,16 @@
                 </div>
 
                 <div class="tombol">
-
-                    <a href="#" class="btn btn-secondary"> <i class="fas fa-history"></i> Riwayat Transaksi</a>
-                    <a href="#" class="btn" style="background: #663300;color:white;"><i class="fas fa-print"></i>
+                    <a href="{{ route('pembayaran.index') }}" class="btn btn-secondary"> <i class="fas fa-history"></i>
+                        Riwayat Transaksi</a>
+                    <a href="{{ route('pembayaran.cetak', [$id]) }}" class="btn"
+                        style="background: #663300;color:white;"><i class="fas fa-print"></i>
                         Cetak Struk</a>
                     <a href="#" class="btn btn-danger"> <i class="fas fa-times-circle"></i> Batalkan</a>
                 </div>
             </div>
 
         </div>
-
-
     </div>
 
 @endsection

@@ -20,6 +20,11 @@ class OrderController extends Controller
         $no_order = Order::no_order();
         return view('kasir.order.index', compact('menu', 'no_order', 'meja'));
     }
+    public function riwayat()
+    {
+        $order = Order::with('meja')->orderBy('created_at', 'desc')->get();
+        return view('kasir.order.riwayat', compact('order'));
+    }
 
     public function store(Request $request)
     {

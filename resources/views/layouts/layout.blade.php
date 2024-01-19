@@ -62,6 +62,17 @@
         .select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
             background-color: #663300;
         }
+
+        @media screen and (max-width:450px) {
+
+            body {
+                font-size: 12px;
+            }
+
+            #searchDropdown {
+                display: none;
+            }
+        }
     </style>
 </head>
 
@@ -161,8 +172,14 @@
                     <span>Kasir</span></a>
             </li>
             <li class="nav-item">
+                <a class="nav-link text-white {{ request()->is('riwayat-order') ? 'active' : '' }}"
+                    href="{{ route('order.riwayat') }}">
+                    <i class="fas fa-history"></i>
+                    <span>Data Order</span></a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link text-white {{ request()->is('pembayaran') ? 'active' : '' }}"
-                    href="{{ route('order.index') }}">
+                    href="{{ route('pembayaran.index') }}">
                     <i class="fas fa-money-check-alt"></i>
                     <span>Transaksi</span></a>
             </li>
@@ -199,7 +216,7 @@
                         class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
                             <div class="input-group-append">
-                                <h4 class="text-dark font-weight-bold">Coffe Shop AreaKongkow </h4>
+                                <h4 class="text-dark font-weight-bold">Coffeshop AreaKongkow </h4>
                             </div>
                         </div>
                     </form>

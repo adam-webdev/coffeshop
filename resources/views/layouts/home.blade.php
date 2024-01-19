@@ -1,7 +1,38 @@
-@extends('layouts.layout')
-@section('title', 'Order')
-@section('css')
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="icon" type="image/jpg" sizes="16x16" href="/favicon.jpg">
+
+    <title>Coffes Shop</title>
+    <link href="{{ asset('asset/vendor/select2/dist/css/select2.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('asset/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+    <!-- Custom styles for this template-->
+    <link href="{{ asset('asset/css/sb-admin-2.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('asset/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            padding-top: 56px;
+            /* Adjust the value based on your navbar height */
+            align-items: center;
+        }
+
+        .row {
+            overflow-x: hidden;
+        }
+
         .img-menu {
             object-fit: cover;
 
@@ -68,10 +99,66 @@
             color: white;
         }
 
-        @media screen and (max-width:450px) {
-            .img-menu {
-                width: 130px;
+        .cart-order {
+            position: relative;
+        }
+
+        .cart-order .badge {
+            position: absolute;
+            margin-bottom: 10px;
+            z-index: 999;
+        }
+
+        @media screen and (max-width: 767px) {
+
+
+            .col-md-5,
+            .col-md-7 {
+                width: 98%;
+                margin-right: 0;
+                margin-left: 0;
             }
+
+            #search-menu {
+                width: 98%;
+            }
+
+            .menu {
+                width: 98%;
+                margin-bottom: 10px;
+            }
+
+            .img-menu {
+                width: 100%;
+                height: auto;
+            }
+
+            .head,
+            .btn-decrease,
+            .btn-increase,
+            .btn-remove {
+                font-size: 12px;
+            }
+
+            #order-summary ul li span {
+                fon t-size: 12px;
+            }
+
+            body {
+                font-size: 14px;
+            }
+
+            .custom-switch {
+                margin-left: 0;
+                margin-bottom: 10px;
+                justify-content: center;
+            }
+        }
+
+        @media screen and (max-width:450px) {
+            /* .img-menu {
+                width: 130px;
+            } */
 
             .head {
                 font-size: 12px;
@@ -92,6 +179,29 @@
             body {
                 font-size: 14px;
             }
+        }
+
+        .data-order {
+            visibility: hidden;
+            min-width: 250px;
+            margin-left: -125px;
+            background-color: #ffd6ad;
+            color: #663300;
+            font-weight: bold;
+            text-align: center;
+            border-radius: 20px;
+            padding: 8px;
+            position: fixed;
+            z-index: 1;
+            left: 50%;
+            bottom: 30px;
+            font-size: 17px;
+        }
+
+        .data-order.show {
+            visibility: visible;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+
         }
 
         /* toast */
@@ -165,116 +275,124 @@
                 opacity: 0;
             }
         }
-    </style>
-@endsection
 
-@section('content')
-    @php
+        /* toast */
+    </style>
+</head>
+
+<body>
+
+    {{-- @php
         setlocale(LC_TIME, 'id_ID');
         \Carbon\Carbon::setLocale('id');
-    @endphp
-    @include('sweetalert::alert')
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Order </h1>
-        <!-- Button trigger modal -->
-        {{-- @role('Admin')
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                + Tambah
-            </button>
-        @endrole --}}
+    @endphp --}}
 
-    </div>
+    <nav class="navbar navbar-default fixed-top  pr-4  bg-white shadow align-items-center justify-content-between"
+        style="border-radius:8px;background-color:rgb(255, 255, 255)!important;">
 
+        <!-- Sidebar Toggle (Topbar) -->
+        <div id="sidebarToggleTop" class="btn btn-linkrounded-circle ">
+            <i class="fas fa-bars"></i>
+
+        </div>
+        <h6 class="text-dark font-weight-bold">Coffeshop AreaKongkow </h6>
+        <div class="cart-order" data-toggle="modal" data-target="#exampleModal">
+            <span class="fas fa-shopping-bag" style="font-size:22px "></span>
+            <span class="badge badge-primary" style="background: #663300" id="total-quantity">0</span>
+        </div>
+        <!-- Topbar Search -->
+
+    </nav>
 
     <!-- Modal -->
     <div class="row">
-        <div class="col-md-5 mt-2">
-            <div class="card ">
-                {{-- <h5 class="pt-4 pl-2 text-center">Order</h5> --}}
-                <div class="mt-2 px-4 d-flex justify-content-between align-items-center">
-                    <p class="head">No Order : {{ $no_order }}</p>
-                    <p class="head">{{ \Carbon\Carbon::now()->isoFormat('dddd, D MMMM Y, HH:mm') }}</p>
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <p>Menu pilihan anda</p>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="card p-2">
+                        {{-- <h5 class="pt-4 pl-2 text-center">Order</h5> --}}
+                        <div class="mt-2 px-4 d-flex justify-content-between align-items-center">
+                            <p class="head">No Order : {{ $no_order }}</p>
+                            <p class="head">{{ \Carbon\Carbon::now()->isoFormat('dddd, D MMMM Y, HH:mm') }}</p>
+                        </div>
+                        <hr>
+                        <form action="{{ route('order.user') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="no_order" value="{{ $no_order }}">
+                            <input type="hidden" name="total" id="total_order">
+                            <input type="hidden" name="waktu" value="{{ \Carbon\Carbon::now() }}">
+                            <div id="order-summary">
+                                {{-- <h2>Order Summary</h2> --}}
+                                <ul>
+                                    <li width="100%"
+                                        style="display:flex;justify-content:space-between;align-items:center;">
+                                        <span class="nama-menu">
+                                            Nama
+                                        </span>
+                                        <span>
+                                            Qty
+                                        </span>
+                                        <span>
+                                            Harga
+                                        </span>
+                                        <span>
+                                            Aksi
+                                            </sp>
+                                    </li>
+                                </ul>
+                                <hr>
+                                <ul id="order-list"></ul>
+                                <hr>
+
+                                <div class="custom-control custom-switch px-4">
+                                    <input type="checkbox" class="custom-control-input" id="customSwitch1">
+                                    <label class="custom-control-label" for="customSwitch1">Dibungkus ?</label>
+                                </div>
+                                <div id="dibungkus" class="px-4">
+                                    <select id="selectInput" name="meja_id" class="form-control select">
+                                        <option value="">-- Pilih Meja --</option>
+                                        @foreach ($meja as $meja)
+                                            <option value="{{ $meja->id }}"
+                                                {{ $meja->status == 1 ? 'disabled' : '' }}>
+                                                {{ $meja->nama }} <p>
+                                                    {{ $meja->status == 1 ? 'Terisi' : 'Kosong' }}</p>
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="mt-2 custom-control custom-switch px-4">
+                                    <input type="checkbox" class="custom-control-input" id="customSwitch2">
+                                    <label class="custom-control-label" for="customSwitch2">Ada catatan
+                                        ?</label>
+                                </div>
+                                <div id="catatan" class="px-4" style="display: none">
+                                    <textarea class="form-control catatan" type="text" name="catatan" rows="2" placeholder="Masukan catatan..."></textarea>
+                                </div>
+                                <div class="px-4 mt-4">
+                                    <p>Total Items: <span id="total-quantity">0</span></p>
+                                    {{-- <p>Total Price: <span id="total-price">@currency(0)</span></p> --}}
+                                </div>
+                            </div>
+
+                            <div class="form-group px-4">
+                                <button type="submit" class="d-block bayar btn btn-primary"
+                                    style="background-color: #663300;">Order @currency(0)</button>
+                            </div>
+                        </form>
+
+                    </div>
+
+
                 </div>
-                <hr>
-                <form action="{{ route('order.store') }}" method="POST">
-                    @csrf
-                    <input type="hidden" name="no_order" value="{{ $no_order }}">
-                    <input type="hidden" name="total" id="total_order">
-                    <input type="hidden" name="waktu" value="{{ \Carbon\Carbon::now() }}">
-                    <div id="order-summary">
-                        {{-- <h2>Order Summary</h2> --}}
-                        <ul style="margin-right: 25px">
-                            <li width="100%" style="display:flex;justify-content:space-between;align-items:center;">
-                                <span class="nama-menu">
-                                    Nama
-                                </span>
-                                <span>
-                                    Qty
-                                </span>
-                                <span>
-                                    Harga
-                                </span>
-                                <span>
-                                    Aksi
-                                    </sp>
-                            </li>
-                        </ul>
-                        <hr>
-                        <ul id="order-list"></ul>
-                        <hr>
-
-                        <div class="custom-control custom-switch px-4">
-                            <input type="checkbox" class="custom-control-input" id="customSwitch1">
-                            <label class="custom-control-label" for="customSwitch1">Dibungkus ?</label>
-                        </div>
-                        <div id="dibungkus" class="px-4">
-                            <select id="selectInput" name="meja_id" class="form-control select">
-                                <option value="">-- Pilih Meja --</option>
-                                @foreach ($meja as $meja)
-                                    <option value="{{ $meja->id }}" {{ $meja->status == 1 ? 'disabled' : '' }}>
-                                        {{ $meja->nama }} <p>{{ $meja->status == 1 ? 'Terisi' : 'Kosong' }}</p>
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="mt-2 custom-control custom-switch px-4">
-                            <input type="checkbox" class="custom-control-input" id="customSwitch2">
-                            <label class="custom-control-label" for="customSwitch2">Ada catatan ?</label>
-                        </div>
-                        <div id="catatan" class="px-4" style="display: none">
-                            <textarea class="form-control catatan" type="text" name="catatan" rows="2" placeholder="Masukan catatan..."></textarea>
-                        </div>
-                        <div class="px-4 mt-4">
-                            <p>Dilayani Oleh : <span>{{ auth()->user()->name }}</span></p>
-                            <p>Total Items: <span id="total-quantity">0</span></p>
-                            {{-- <p>Total Price: <span id="total-price">@currency(0)</span></p> --}}
-                        </div>
-                    </div>
-
-                    {{-- <div class="modal-body">
-                        <div class="form-group">
-                            <label for="nama">Nama Menu :</label>
-                            <input type="text" name="nama" class="form-control id="nama" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="harga">Jumlah :</label>
-                            <input type="number" name="harga" class="form-control" id="harga" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="harga">Harga :</label>
-                            <input type="number" name="harga" class="form-control" id="harga" required>
-                        </div>
-
-                    </div> --}}
-                    {{-- <button type="button" class="btn  btn-secondary" onclick="history.go(-1)"> Batal</button> --}}
-                    <div class="form-group px-4">
-                        <button type="submit" class="d-block bayar btn btn-primary"
-                            style="background-color: #663300;">Bayar @currency(0)</button>
-                    </div>
-                </form>
             </div>
-
         </div>
+
 
         <div class="col-md-7 mt-2">
             <div class="card p-4">
@@ -288,8 +406,8 @@
                             <a href="#" class="menu-link" data-nama="{{ $m->nama }}"
                                 data-harga="{{ $m->harga }}" data-id="{{ $m->id }}">
                                 <div class="card">
-                                    <img class="img-menu" src="/storage/{{ $m->foto }}" width="150px" height="150px"
-                                        alt="{{ $m->nama }}">
+                                    <img class="img-menu" src="/storage/{{ $m->foto }}" width="150px"
+                                        height="150px" alt="{{ $m->nama }}">
                                     <div class="title p-2">
                                         <span><b>{{ $m->nama }}</b></span><br>
                                         <span>@currency($m->harga)</span>
@@ -303,11 +421,32 @@
             </div>
         </div>
     </div>
-    <div id="snackbar">item berhasil dipilih..</div>
 
-@endsection
-@section('scripts')
-    <script>
+
+    <p id="snackbar">item berhasil dipilih..</p>
+    {{-- <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script> --}}
+    <!-- Bootstrap core JavaScript-->
+    <script src="{{ asset('asset/vendor/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('asset/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="{{ asset('asset/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="{{ asset('asset/js/sb-admin-2.min.js') }}"></script>
+
+    <!-- Page level plugins -->
+    <script src="{{ asset('asset/vendor/chart.js/Chart.min.js') }}"></script>
+    <script src="{{ asset('asset/vendor/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('asset/vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="{{ asset('asset/js/demo/chart-area-demo.js') }}"></script>
+    <script src="{{ asset('asset/js/demo/chart-pie-demo.js') }}"></script>
+    <script src="{{ asset('asset/js/demo/datatables-demo.js') }}"></script>
+    <script src="{{ asset('asset/vendor/select2/dist/js/select2.min.js') }}"></script>
+
+    <script type="text/javascript">
         $(document).ready(function() {
             $('#customSwitch1').change(function() {
                 // Jika toggle switch off, tampilkan select input
@@ -332,7 +471,6 @@
                 width: '100%'
             });
             var dataList = @json($menu); // Inisialisasi orderList dari PHP
-
             console.log("data : ", dataList)
             // ... (bagian skrip lainnya tetap sama)
 
@@ -355,7 +493,7 @@
 
             $(".menu-link").on("click", function(e) {
                 e.preventDefault();
-                showToast()
+                showToast($(this).data("nama"));
                 var nama = $(this).data("nama");
                 var id = $(this).data("id");
                 var harga = $(this).data("harga");
@@ -451,19 +589,35 @@
                 $("#total-quantity").text(totalQuantity);
                 $("#total-price").text(formatCurrency(totalPrice));
                 $("#total_order").val(totalPrice);
-                $(".bayar").text("  Bayar " + formatCurrency(totalPrice));
+                $(".bayar").text("  Order " + formatCurrency(totalPrice));
 
             }
 
 
         });
 
-        function showToast() {
+        function showToast(name) {
             var x = document.getElementById("snackbar");
             x.className = "show";
+            x.textContent = `${name}  berhasil dipilih.`
+            console.log(x)
             setTimeout(function() {
                 x.className = x.className.replace("show", "");
             }, 3000);
         }
+
+        // function shoMenu() {
+        //     var x = document.getElementById("menu-order");
+        //     x.className = "show";
+        // }
+
+        // function closeMenu() {
+        //     var x = document.getElementById("menu-order");
+        //     x.className = "";
+        // }
     </script>
-@endsection
+
+
+</body>
+
+</html>

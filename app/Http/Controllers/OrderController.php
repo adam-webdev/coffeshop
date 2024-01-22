@@ -106,6 +106,18 @@ class OrderController extends Controller
 
         DB::table('order_detail')->insert($order_detail);
         Alert::success("Berhasil", "Order berhasil silahkan ke kasir untuk melakukan pembayaran");
-        return redirect()->route('pembayaran.order', [$new_order->id]);
+        return redirect()->route('order.sukses', [$new_order->id]);
+    }
+    public function order_user_sukses($id)
+    {
+        $order = Order::with('orderdetail')->where('id', $id)->first();
+        return view('layouts.sukses_order', compact('order'));
+    }
+    public function delete($id)
+    {
+        $order = Order::findOrFail($id);
+        $order->delete();
+        Alert::success("Berhasil", "Data berhasil dihapus");
+        return redirect()->route('order.index');
     }
 }

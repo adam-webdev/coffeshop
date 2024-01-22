@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::post('/order-user', [OrderController::class, "order_user"])->name('order.user');
+Route::get('/order-user-berhasil/{id}', [OrderController::class, "order_user_sukses"])->name('order.sukses');
 
 // Route::get('/', function () {
 //     return view('home');
@@ -25,7 +27,8 @@ Auth::routes();
 Route::middleware('auth')->group(function () {
 
     Route::resource('/dashboard', DashboardController::class);
-    Route::get('/produk-telaris', [DashboardController::class, 'getByBulanTahun'])->name('produkterlaris');
+    Route::get('/penjualan-by-bulan-tahun', [DashboardController::class, 'penjualanBulanan'])->name('penjualan.bulan');
+    Route::get('/penjualan-by-tahun', [DashboardController::class, 'penjualanTahunan'])->name('penjualan.tahun');
 
     Route::resource('/bahan-baku', BahanBakuController::class);
     Route::get('/bahan-baku/hapus/{id}', [BahanBakuController::class, "delete"]);
@@ -53,7 +56,6 @@ Route::middleware('auth')->group(function () {
     // order
     Route::resource('/order', OrderController::class);
     Route::get('/order/hapus/{id}', [OrderController::class, "delete"]);
-    Route::post('/order-user', [OrderController::class, "order_user"])->name('order.user');
     Route::get('/riwayat-order', [OrderController::class, "riwayat"])->name('order.riwayat');
     // pembayaran
     Route::resource('/pembayaran', PembayaranController::class);

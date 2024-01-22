@@ -23,15 +23,18 @@
             box-sizing: border-box;
         }
 
+        .navbar {
+            width: 100%;
+        }
+
         body {
             padding-top: 56px;
+            overflow-x: hidden;
             /* Adjust the value based on your navbar height */
             align-items: center;
         }
 
-        .row {
-            overflow-x: hidden;
-        }
+
 
         .img-menu {
             object-fit: cover;
@@ -58,7 +61,7 @@
         }
 
         button.bayar:hover {
-            background-color: #663300b0;
+            background-color: #663300;
         }
 
         .nama-menu {
@@ -160,9 +163,14 @@
         }
 
         @media screen and (max-width:450px) {
+
             /* .img-menu {
                 width: 130px;
             } */
+            .img-menu {
+                width: 100%;
+                height: auto;
+            }
 
             .head {
                 font-size: 12px;
@@ -290,8 +298,7 @@
         setlocale(LC_TIME, 'id_ID');
         \Carbon\Carbon::setLocale('id');
     @endphp --}}
-
-    <nav class="navbar navbar-default fixed-top  pr-4  bg-white shadow align-items-center justify-content-between"
+    <nav class="navbar navbar-default fixed-top    bg-white shadow align-items-center justify-content-between"
         style="border-radius:8px;background-color:rgb(255, 255, 255)!important;">
 
         <ul>
@@ -308,12 +315,11 @@
                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                         Login Petugas
                     </a>
-                    {{-- <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#" data-toggle="modal"
-                                    data-target="#logoutModal">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Logout
-                                </a> --}}
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                        Logout
+                    </a>
                 </div>
             </li>
         </ul>
@@ -325,9 +331,11 @@
         <!-- Topbar Search -->
     </nav>
 
+
     <!-- Modal -->
     <div class="row">
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade m-2" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -339,7 +347,7 @@
                     <div class="card p-2">
                         {{-- <h5 class="pt-4 pl-2 text-center">Order</h5> --}}
                         <div class="mt-2 px-4 d-flex justify-content-between align-items-center">
-                            <p class="head">No Order : {{ $no_order }}</p>
+                            <p class="head"> {{ $no_order }}</p>
                             <p class="head">{{ \Carbon\Carbon::now()->isoFormat('dddd, D MMMM Y, HH:mm') }}</p>
                         </div>
                         <hr>
@@ -371,7 +379,8 @@
                                 <ul id="order-list"></ul>
                                 <hr>
 
-                                <div class="custom-control custom-switch px-4">
+                                <div class="custom-control custom-switch ]
+                                '">
                                     <input type="checkbox" class="custom-control-input" id="customSwitch1">
                                     <label class="custom-control-label" for="customSwitch1">Dibungkus ?</label>
                                 </div>

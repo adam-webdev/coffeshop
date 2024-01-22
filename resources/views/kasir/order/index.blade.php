@@ -4,7 +4,21 @@
     <style>
         .img-menu {
             object-fit: cover;
+        }
 
+        .img-menu-habis {
+            filter: grayscale(60);
+        }
+
+        .habis {
+            position: absolute;
+            top: 35%;
+            left: 50%;
+            background: white;
+            font-weight: bold;
+            padding: 4px 8px;
+            border-radius: 20px;
+            transform: translate(-50%, -50%);
         }
 
         a.menu-link {
@@ -70,7 +84,7 @@
 
         @media screen and (max-width:450px) {
             .img-menu {
-                width: 130px;
+                width: 142px;
             }
 
             .head {
@@ -282,7 +296,7 @@
                     <label for="search">Search :</label>
                     <input type="search" placeholder="cari menu..." id="search-menu">
                 </div>
-                <div class="d-flex tbody">
+                {{-- <div class="d-flex tbody">
                     @foreach ($menu as $m)
                         <div class="menu">
                             <a href="#" class="menu-link" data-nama="{{ $m->nama }}"
@@ -299,7 +313,40 @@
                         </div>
                     @endforeach
 
+                </div> --}}
+                <div class="d-flex tbody">
+                    @foreach ($menu as $m)
+                        <div class="menu">
+                            <a href="#" class="menu-link"
+                                @if ($m->status == 0) onclick="return false;"
+                                style="pointer-events: none; color: grey; text-decoration: none;"
+                                data-toggle="tooltip"
+                                title="Menu ini habis"
+                                @else
+                                data-nama="{{ $m->nama }}"
+                                data-harga="{{ $m->harga }}"
+                                data-id="{{ $m->id }}" @endif>
+                                <div class="card">
+                                    @if ($m->status == 0)
+                                        <img class="img-menu-habis" src="/storage/{{ $m->foto }}" width="150px"
+                                            height="150px" alt="{{ $m->nama }}">
+                                    @else
+                                        <img class="img-menu" src="/storage/{{ $m->foto }}" width="150px"
+                                            height="150px" alt="{{ $m->nama }}">
+                                    @endif
+                                    <div class="title p-2">
+                                        <span><b>{{ $m->nama }}</b></span><br>
+                                        <span>@currency($m->harga)</span>
+                                        @if ($m->status == 0)
+                                            <br><span class="habis" style="color: red;">Habis</span>
+                                        @endif
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    @endforeach
                 </div>
+
             </div>
         </div>
     </div>

@@ -25,8 +25,22 @@
         .tombol {
             margin-top: 30px;
             display: flex;
-            justify-content: space-evenly;
+            justify-content: space-between;
             align-items: center;
+        }
+
+        @media screen and (max-width:768px) {
+            .tombol {
+                flex-direction: row;
+                justify-content: center;
+
+            }
+
+            .tombol a {
+                font-size: 14px;
+            }
+
+
         }
     </style>
 @endsection
@@ -57,12 +71,13 @@
                 </div>
 
                 <div class="tombol">
-                    <a href="{{ route('pembayaran.index') }}" class="btn btn-secondary"> <i class="fas fa-history"></i>
-                        Riwayat Transaksi</a>
-                    <a href="{{ route('pembayaran.cetak', [$id]) }}" class="btn"
+                    <a href="{{ route('pembayaran.index') }}" class="mr-2 d-block btn btn-secondary"> <i
+                            class="fas fa-history"></i>
+                        Transaksi </a>
+                    <a href="{{ route('pembayaran.cetak', [$id]) }}" class="btn d-block"
                         style="background: #663300;color:white;"><i class="fas fa-print"></i>
                         Cetak Struk</a>
-                    <a href="#" class="btn btn-danger"> <i class="fas fa-times-circle"></i> Batalkan</a>
+                    {{-- <a href="#" class="btn btn-danger"> <i class="fas fa-times-circle"></i> Batalkan</a> --}}
                 </div>
             </div>
 

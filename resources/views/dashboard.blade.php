@@ -18,7 +18,121 @@
     <div class="card p-4">
         <h5>Selamat Datang <b>{{ Auth::user()->name }} </b> di Dashboard </h5>
         <hr>
-        {{-- <div class="row ">
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card p-4 mt-3">
+
+                <div class="flex">
+
+                    <h4>Penjualan Tahunan</h4>
+                    {{-- <form action="{{ route('penjualan.bulan') }}" method="GET"> --}}
+                    <div class="form">
+                        {{-- <label for="bulan">Pilih Bulan:</label>
+                        <select name="bulan" id="bulan" class="mr-4">
+                            @for ($i = 1; $i <= 12; $i++)
+                                <option value="{{ $i }}" {{ request('bulan') == $i ? 'selected' : '' }}>
+                                    {{ date('F', mktime(0, 0, 0, $i, 1)) }}
+                                </option>
+                            @endfor
+                        </select> --}}
+
+                        <label for="tahun">Pilih Tahun:</label>
+                        <select name="tahun" id="tahun-penjualan">
+                            @for ($i = date('Y'); $i >= 2010; $i--)
+                                <option value="{{ $i }}" {{ request('tahun') == $i ? 'selected' : '' }}>
+                                    {{ $i }}</option>
+                            @endfor
+                        </select>
+                    </div>
+
+                    {{-- <button type="submit">Filter</button> --}}
+                    </form>
+                </div>
+                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                    <div class="table-responsive">
+                        <table class="table table-bordered " id="dataTable" width="100%">
+                            <thead>
+                                <tr align="center">
+                                    <th>No</th>
+                                    <th>Menu </th>
+                                    <th>Total Penjualan</th>
+                                    <th>Tahun</th>
+                                </tr>
+                            </thead>
+                            <tbody id="data-penjualan-tahunan">
+                                @foreach ($penjualan_tahunan as $sales)
+                                    <tr align="center">
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $sales->menu->nama }}</td>
+                                        <td>{{ $sales->total }}</td>
+                                        <td>{{ $sales->year }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card p-4 mt-3">
+                <div class="flex">
+
+                    <h4>Penjualan Bulanan</h4>
+                    {{-- <form action="{{ route('penjualan.bulan') }}" method="GET"> --}}
+                    <div class="form">
+                        <label for="bulan">Pilih Bulan:</label>
+                        <select name="bulan" id="bulan" class="mr-4">
+                            @for ($i = 1; $i <= 12; $i++)
+                                <option value="{{ $i }}" {{ request('bulan') == $i ? 'selected' : '' }}>
+                                    {{ date('F', mktime(0, 0, 0, $i, 1)) }}
+                                </option>
+                            @endfor
+                        </select>
+
+                        <label for="tahun">Pilih Tahun:</label>
+                        <select name="tahun" id="tahun">
+                            @for ($i = date('Y'); $i >= 2010; $i--)
+                                <option value="{{ $i }}" {{ request('tahun') == $i ? 'selected' : '' }}>
+                                    {{ $i }}</option>
+                            @endfor
+                        </select>
+                    </div>
+
+                    {{-- <button type="submit">Filter</button> --}}
+                    </form>
+                </div>
+                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                    <div class="table-responsive">
+
+                        <table class="table table-bordered " id="dataTable2" width="100%">
+                            <thead>
+                                <tr align="center">
+                                    <th>No</th>
+                                    <th>Menu </th>
+                                    <th>Total Penjualan</th>
+                                    <th>Bulan</th>
+                                </tr>
+                            </thead>
+                            <tbody id="data-penjualan-bulanan">
+                                @foreach ($penjualan_bulanan as $sales)
+                                    <tr align="center">
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $sales->menu->nama }}</td>
+                                        <td>{{ $sales->total }}</td>
+                                        <td>{{ $sales->month_name }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- <div class="row ">
             <div class="col-md-3">
                 <div class="card p-2 cardMenu">
                     <div class="d-flex align-items-center">
@@ -139,7 +253,7 @@
             </div>
         </div>
     </div> --}}
-        {{-- <div class="row align-items-center">
+    {{-- <div class="row align-items-center">
         <div class="col-md-4 ml-4">
             <img width="400px" height="400px" src="{{asset("asset/img/company.svg")}}" alt="">
         </div>
@@ -156,51 +270,87 @@
 
         </div>
     </div> --}}
-    @endsection
+@endsection
+@section('scripts')
+    <script>
+        $(document).ready(function() {
+            $("#dataTable2").DataTable();
+            $('#bulan, #tahun').on('change', function() {
+                var bulan = $('#bulan').val()
+                var tahun = $('#tahun').val()
+                console.log(bulan)
+                console.log(tahun)
+                $.ajax({
+                    type: 'GET',
+                    url: "{{ route('penjualan.bulan') }}",
+                    data: {
+                        bulan: bulan,
+                        tahun: tahun
+                    },
+                    success: function(data) {
+                        console.log("data : ", data)
 
-    {{-- @section('scripts')
-        <script>
-            $(document).ready(function() {
-                $('#bulan, #tahun').on('change', function() {
-                    var bulan = $('#bulan').val()
-                    var tahun = $('#tahun').val()
-                    console.log(bulan)
-                    console.log(tahun)
-                    $.ajax({
-                        type: 'GET',
-                        url: "{{ route('produkterlaris') }}",
-                        data: {
-                            bulan: bulan,
-                            tahun: tahun
-                        },
-                        success: function(data) {
-                            console.log("data : ", data)
+                        if (data.length == 0) {
+                            $('#data-penjualan-bulanan').html(`
+                       <tr align="center"><td colspan="4">Data tidak ditemukan!</td></tr>
+                    `)
+                        } else {
+                            $('#data-penjualan-bulanan').html(
+                                data.map((item, index) => {
+                                    return `<tr>
+                                         <td>${index+1}</td>
+                                        <td>${ item.menu.nama }</td>
+                                        <td>${ item.total }</td>
+                                        <td>${ item.month_name }</td>
+                                    </tr>
+                                       `
+                                })
 
-                            if (data.length == 0) {
-                                $('#data-produk').html(`
-                               <tr align="center"><td colspan="5">Data tidak ditemukan!</td></tr>
-                            `)
-                            } else {
-                                $('#data-produk').html(
-                                    data.map((item, index) => {
-                                        return `<tr>
-                                                <td>${index+1}</td>
-                                                <td>${item.nama_fg}</td>
-                                                <td>${item.jumlah_penjualan}</td>
-                                                <td>${item.bulan}</td>
-                                                <td>${item.tahun}</td>
-                                            </tr>`
-                                    })
-
-                                )
-                            }
-                        },
-                        error: function(xhr, status, error) {
-                            console.error(xhr.responseText)
+                            )
                         }
-                    })
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText)
+                    }
                 })
-
             })
-        </script>
-    @endsection --}}
+            $("#tahun-penjualan").on('change', function() {
+                var tahun = $('#tahun-penjualan').val()
+                console.log(tahun)
+                $.ajax({
+                    type: 'GET',
+                    url: "{{ route('penjualan.tahun') }}",
+                    data: {
+                        tahun: tahun
+                    },
+                    success: function(data) {
+                        console.log("data : ", data)
+
+                        if (data.length == 0) {
+                            $('#data-penjualan-tahunan').html(`
+                       <tr align="center"><td colspan="4">Data tidak ditemukan!</td></tr>
+                    `)
+                        } else {
+                            $('#data-penjualan-tahunan').html(
+                                data.map((item, index) => {
+                                    return `<tr>
+                                         <td>${index+1}</td>
+                                        <td>${ item.menu.nama }</td>
+                                        <td>${ item.total }</td>
+                                        <td>${ item.year }</td>
+                                    </tr>
+                                       `
+                                })
+
+                            )
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText)
+                    }
+                })
+            })
+
+        })
+    </script>
+@endsection

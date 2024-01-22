@@ -25,7 +25,7 @@
         <div class="col-md-4 mt-2">
             <div class="card ">
                 <h5 class="pt-4 pl-2">Tambah Bahan Baku Terpakai</h5>
-                <form action="{{ route('bahanbaku-terpakai.store') }}" method="POST">
+                <form action="{{ route('bahanbaku-masuk.store') }}" method="POST">
                     @csrf
                     <div class="modal-body">
                         <div class="form-group">
@@ -73,13 +73,13 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($bahanbakuterpakai as $bbm)
+                                @foreach ($bahanbakumasuk as $bbm)
                                     <tr align="center">
                                         <td width="2%">{{ $loop->iteration }}</td>
-                                        <td>{{ $bbt->bahanbaku->nama }}</td>
-                                        <td>{{ $bbt->jumlah }}</td>
-                                        <td>{{ $bbt->bahanbaku->stok }}</td>
-                                        <td>{{ \Carbon\Carbon::parse($bbt->tanggal)->isoFormat('dddd, D MMMM Y') }}</td>
+                                        <td>{{ $bbm->bahanbaku->nama }}</td>
+                                        <td>{{ $bbm->jumlah }}</td>
+                                        <td>{{ $bbm->bahanbaku->stok }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($bbm->tanggal)->isoFormat('dddd, D MMMM Y') }}</td>
 
                                         <td align="center" width="10%">
                                             {{-- @role('Admin') --}}
@@ -88,7 +88,7 @@
                                                 class="d-none  d-sm-inline-block btn btn-sm btn-secondary shadow-sm">
                                                 <i class="fas fa-edit fa-sm text-white"></i>
                                             </a> --}}
-                                            <a href="/bahanbaku-terpakai/hapus/{{ $bbt->id }}" data-toggle="tooltip"
+                                            <a href="/bahanbaku-masuk/hapus/{{ $bbm->id }}" data-toggle="tooltip"
                                                 title="Hapus" onclick="return confirm('Yakin Ingin menghapus data?')"
                                                 class="mt-2 d-sm-inline-block btn btn-sm text-white shadow-sm"
                                                 style="background-color: #663300;">

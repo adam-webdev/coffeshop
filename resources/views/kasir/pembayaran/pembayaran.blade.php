@@ -53,17 +53,17 @@
         }
 
         .total {
-            background: #b5ffd0;
             padding: 10px 20px;
             display: flex;
             justify-content: center;
             align-items: center;
+            background: #DFD8D0;
         }
 
         .total p {
             font-size: 20px;
             font-weight: bold;
-            color: #00AA28;
+            color: #663300;
         }
 
         .bayar {
@@ -71,6 +71,20 @@
             font-size: 18px;
             font-weight: bold;
             text-transform: uppercase;
+        }
+
+        .transfer img,
+        .ewallet img,
+        .qris img {
+            width: 200px;
+        }
+
+        .transfer .row,
+        .ewallet .row,
+        .qris .row {
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
         }
     </style>
 @endsection
@@ -110,19 +124,84 @@
                             @customDateFormat($order->waktu)</p>
                     </div>
                     <div class="form-group my-2 px-4">
-                        <label for="uang">Uang Cash :</label>
-                        <input type="number" name="uang" id="uang" placeholder="Masukan uang..." required
-                            class="form-control py-4">
+                        <label for="metode">Metode Pembayaran :</label>
+                        <select name="status" id="metode" class="form-control">
+                            <option value="">-- pilih metode pembayaran --</option>
+                            <option value="cash">Cash</option>
+                            <option value="transfer">Transfer </option>
+                            <option value="ewallet">E Wallet </option>
+                            <option value="qris">Qris </option>
+                        </select>
                     </div>
-                    <div class="form-group my-2 px-4">
-                        <label for="kembalian">Kembalian :</label>
-                        <input type="number" readonly id="kembalian" name="kembalian" placeholder="Kembalian..."
-                            class="form-control py-4">
+                    {{-- <input type="hidden" id="status_pembayaran" name="uang" > --}}
+                    {{-- metode cash --}}
+                    <div class="cash" style="display: none">
+                        <div class="form-group my-2 px-4">
+                            <label for="uang">Uang Cash :</label>
+                            <input type="number" name="uang" id="uang" placeholder="Masukan uang..."
+                                class="form-control py-4">
+                        </div>
+                        <div class="form-group my-2 px-4">
+                            <label for="kembalian">Kembalian :</label>
+                            <input type="number" readonly id="kembalian" name="kembalian" placeholder="Kembalian..."
+                                class="form-control py-4">
+                        </div>
                     </div>
+
+                    {{-- metode transfer --}}
+                    <div class="transfer" style="display: none">
+                        <div class="form-group my-2 px-4">
+                            <div class="row mt-4">
+                                <img src="{{ asset('/asset/img/transfer/bri.png') }}" alt="Bri Logo">
+                                <p>no rek : <b>18000090</b> a/n <b>coffeareakongkow</b></p>
+                            </div>
+                            <div class="row mt-4 ">
+                                <img src="{{ asset('/asset/img/transfer/mandiri.png') }}" alt="Mandiri Logo">
+                                <p>no rek : <b>18000090</b> a/n <b>coffeareakongkow</b></p>
+                            </div>
+                            <div class="row mt-4">
+                                <img src="{{ asset('/asset/img/transfer/bcaa.png') }}" alt="Bca Logo">
+                                <p>no rek : <b>18000090</b> a/n <b>coffeareakongkow</b></p>
+                            </div>
+                        </div>
+                    </div>
+                    {{-- metode ewallet --}}
+                    <div class="ewallet" style="display: none">
+                        <div class="form-group my-2 px-4">
+                            <div class="row mt-4">
+                                <img src="{{ asset('/asset/img/transfer/dana.png') }}" alt="Dana Logo">
+                                <p>no dana : <b>083213344</b> a/n <b>coffeareakongkow</b></p>
+
+                            </div>
+                            <div class="row mt-4 ">
+                                <img src="{{ asset('/asset/img/transfer/shoopepay.png') }}" alt="Shopee Pay Logo">
+                                <p>no shopeepay : <b>083213344</b> a/n <b>coffeareakongkow</b></p>
+
+                            </div>
+                            <div class="row mt-4">
+                                <img src="{{ asset('/asset/img/transfer/gopay.png') }}" alt="Gopay Logo">
+                                <p>no gopay : <b>083213344</b> a/n <b>coffeareakongkow</b></p>
+
+                            </div>
+                            <div class="row mt-4">
+                                <img src="{{ asset('/asset/img/transfer/ovo.png') }}" alt="Ovo Logo">
+                                <p>no ovo : <b>083213344</b> a/n <b>coffeareakongkow</b></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="qris" style="display: none">
+                        <div class="form-group my-2 px-4">
+                            <div class="row mt-4">
+                                <img src="{{ asset('/asset/img/transfer/qris.png') }}" alt="Qris Logo">
+                                <p>Silahkan scan barcode diatas a/n <b>coffeareakongkow</b></p>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="form-group my-2 px-4">
-                        <button type="submit" class=" w-100 mt-3  bayar btn btn-primary" style="background-color: #663300;"
-                            disabled>Proses</button>
-                        <button type="button" class="mt-2 w-100  btn btn-danger" onclick="history.go(-1)">
+                        <button type="submit" class=" w-100 mt-3  bayar btn btn-primary"
+                            style="background-color: #663300;">Proses</button>
+                        <button type="button" class="mt-2 w-100  btn btn-secondary" onclick="history.go(-1)">
                             Batal</button>
                     </div>
 
@@ -200,20 +279,50 @@
                 width: '100%'
             });
 
+            var total_belanja = "{{ $order->total }}";
+            $('#metode').on('change', function() {
+                var metode = $('#metode').val()
+                if (metode == "cash") {
+                    $('.cash').css('display', 'block')
+                    $('.transfer').css('display', 'none')
+                    $('.ewallet').css('display', 'none')
+                    $('.qris').css('display', 'none')
+                } else if (metode == "transfer") {
+                    $('.transfer').css('display', 'block')
+                    $('.ewallet').css('display', 'none')
+                    $('.qris').css('display', 'none')
+                    $('.cash').css('display', 'none')
+                    $('#uang').val(total_belanja)
+                } else if (metode == "ewallet") {
+                    $('.ewallet').css('display', 'block')
+                    $('.qris').css('display', 'none')
+                    $('.cash').css('display', 'none')
+                    $('.transfer').css('display', 'none')
+                    $('#uang').val(total_belanja)
+                } else if (metode == "qris") {
+                    $('.qris').css('display', 'block')
+                    $('.cash').css('display', 'none')
+                    $('.transfer').css('display', 'none')
+                    $('.ewallet').css('display', 'none')
+                    $('#uang').val(total_belanja)
+                }
 
-            // console.log("data : ", dataList)
-            // ... (bagian skrip lainnya tetap sama)
-
+            })
             $("#uang").on("input", function() {
                 var uang = $("#uang").val()
                 var total = $("#total_order").val()
 
                 var kembalian = uang - total;
                 var total = $("#kembalian").val(kembalian)
-
-                $(".bayar").prop("disabled", kembalian < 0)
-                console.log(kembalian)
+                if (metode == "cash") {
+                    $(".bayar").prop("disabled", kembalian < 0)
+                    console.log(kembalian)
+                }
             })
+            // console.log("data : ", dataList)
+            // ... (bagian skrip lainnya tetap sama)
+
+
 
 
             // $("#search-menu").on("input", function() {

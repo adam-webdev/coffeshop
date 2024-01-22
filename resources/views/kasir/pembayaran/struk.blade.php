@@ -95,7 +95,7 @@
         @endforeach
         <hr style="border-top: 1px dashed #5b5b5b;">
         <div id="item">
-            <span>Uang:</span>
+            <span>{{ $transaksi->status }}</span>
             <span style="float: right;">@currency($transaksi->uang)</span>
         </div>
         <div id="item">

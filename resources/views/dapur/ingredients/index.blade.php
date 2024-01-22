@@ -97,24 +97,34 @@
                                 <tr align="center">
                                     <th width="2%">No</th>
                                     <th>Menu</th>
-                                    <th>Bahan Baku</th>
+                                    <th width="30%">Bahan Baku</th>
                                     <th>Satuan </th>
+                                    <th>Porsi </th>
+                                    <th>Keterangan </th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($ingredients as $i)
+                                @php
+                                    $uniqueMenus = $ingredients->unique('menu_id');
+                                @endphp
+
+                                @foreach ($uniqueMenus as $uniqueMenu)
                                     <tr align="center">
                                         <td width="2%">{{ $loop->iteration }}</td>
-                                        <td>{{ $i->menu->nama }}</td>
-                                        <td>
+                                        <td>{{ $uniqueMenu->menu->nama }}</td>
+                                        <td width="30%">
+
                                             <div class="flex">
-                                                <span>{{ $i->bahanbaku->nama }}</span>
-                                                <span>{{ $i->jumlah }}</span>
+                                                @foreach ($ingredients->where('menu_id', $uniqueMenu->menu_id) as $ingredient)
+                                                    <span>(-) {{ $ingredient->bahanbaku->nama }}</span>
+                                                    <span>{{ $uniqueMenu->jumlah }}</span><br>
+                                                @endforeach
                                             </div>
                                         </td>
-                                        <td>{{ $i->bahanbaku->satuan }}</td>
-                                        {{-- <td>{{ \Carbon\Carbon::parse($bbt->tanggal)->isoFormat('dddd, D MMMM Y') }}</td> --}}
+                                        <td>{{ $uniqueMenu->bahanbaku->satuan }}</td>
+                                        <td>{{ $uniqueMenu->porsi }}</td>
+                                        <td>{{ $uniqueMenu->keterangan }}</td>
 
                                         <td align="center" width="10%">
                                             {{-- @role('Admin') --}}
@@ -123,7 +133,7 @@
                                                 class="d-none  d-sm-inline-block btn btn-sm btn-secondary shadow-sm">
                                                 <i class="fas fa-edit fa-sm text-white"></i>
                                             </a> --}}
-                                            <a href="/ingredients/hapus/{{ $i->id }}" data-toggle="tooltip"
+                                            <a href="/ingredients/hapus/{{ $uniqueMenu->id }}" data-toggle="tooltip"
                                                 title="Hapus" onclick="return confirm('Yakin Ingin menghapus data?')"
                                                 class="mt-2 d-sm-inline-block btn btn-sm text-white shadow-sm"
                                                 style="background-color: #663300;">
@@ -133,6 +143,7 @@
                                         </td>
                                     </tr>
                                 @endforeach
+
                             </tbody>
                         </table>
                     </div>

@@ -25,7 +25,7 @@ class PembayaranController extends Controller
     public function store(Request $request)
     {
         $pembayaran = new Pembayaran();
-        $pembayaran->status = "cash";
+        $pembayaran->status = $request->status;
         $pembayaran->order_id = $request->order_id;
         $pembayaran->user_id = $request->user_id;
         $pembayaran->total = $request->total;

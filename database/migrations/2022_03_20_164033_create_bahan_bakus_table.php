@@ -79,6 +79,27 @@ class CreateBahanBakusTable extends Migration
         id = OLD.bahanbaku_id;
         END
         ');
+        // trigger menu
+
+        DB::unprepared('
+        CREATE TRIGGER update_stok_menu after INSERT ON order_detail
+        FOR EACH ROW BEGIN
+        UPDATE menu
+            SET stok = stok - NEW.jumlah
+        WHERE
+        id = NEW.menu_id;
+        END
+        ');
+
+        DB::unprepared('
+        CREATE TRIGGER delete_stok_menu after DELETE ON order_detail
+        FOR EACH ROW BEGIN
+        UPDATE menu
+            SET stok = stok - OLD.jumlah
+        WHERE
+        id = OLD.menu_id;
+        END
+        ');
 
         // Schema::create('customers', function (Blueprint $table) {
         //     $table->id();

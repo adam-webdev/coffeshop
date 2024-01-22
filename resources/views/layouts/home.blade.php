@@ -101,7 +101,11 @@
 
         .cart-order {
             position: relative;
+            cursor: pointer;
+
         }
+
+
 
         .cart-order .badge {
             position: absolute;
@@ -290,18 +294,35 @@
     <nav class="navbar navbar-default fixed-top  pr-4  bg-white shadow align-items-center justify-content-between"
         style="border-radius:8px;background-color:rgb(255, 255, 255)!important;">
 
-        <!-- Sidebar Toggle (Topbar) -->
-        <div id="sidebarToggleTop" class="btn btn-linkrounded-circle ">
-            <i class="fas fa-bars"></i>
+        <ul>
+            <!-- Sidebar Toggle (Topbar) -->
+            <li class="nav-item dropdown no-arrow">
+                <a class="nav-link dropdown-toggle text-dark" href="#" id="userDropdown" role="button"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-bars"></i>
 
-        </div>
+                </a>
+                <!-- Dropdown - User Information -->
+                <div class="dropdown-menu dropdown-menu-left shadow animated--grow-in" aria-labelledby="userDropdown">
+                    <a class="dropdown-item" href="{{ route('login') }}">
+                        <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                        Login Petugas
+                    </a>
+                    {{-- <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#" data-toggle="modal"
+                                    data-target="#logoutModal">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Logout
+                                </a> --}}
+                </div>
+            </li>
+        </ul>
         <h6 class="text-dark font-weight-bold">Coffeshop AreaKongkow </h6>
         <div class="cart-order" data-toggle="modal" data-target="#exampleModal">
             <span class="fas fa-shopping-bag" style="font-size:22px "></span>
             <span class="badge badge-primary" style="background: #663300" id="total-quantity">0</span>
         </div>
         <!-- Topbar Search -->
-
     </nav>
 
     <!-- Modal -->
@@ -372,7 +393,8 @@
                                         ?</label>
                                 </div>
                                 <div id="catatan" class="px-4" style="display: none">
-                                    <textarea class="form-control catatan" type="text" name="catatan" rows="2" placeholder="Masukan catatan..."></textarea>
+                                    <textarea class="form-control catatan" type="text" name="catatan" rows="2"
+                                        placeholder="Masukan catatan..."></textarea>
                                 </div>
                                 <div class="px-4 mt-4">
                                     <p>Total Items: <span id="total-quantity">0</span></p>

@@ -355,7 +355,7 @@
 
             $(".menu-link").on("click", function(e) {
                 e.preventDefault();
-                showToast()
+                showToast($(this).data("nama"));
                 var nama = $(this).data("nama");
                 var id = $(this).data("id");
                 var harga = $(this).data("harga");
@@ -458,12 +458,14 @@
 
         });
 
-        function showToast() {
+        function showToast(name) {
             var x = document.getElementById("snackbar");
             x.className = "show";
+            x.textContent = `${name}  berhasil dipilih.`
+
             setTimeout(function() {
                 x.className = x.className.replace("show", "");
-            }, 3000);
+            }, 4000);
         }
     </script>
 @endsection

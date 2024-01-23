@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Hutang;
+use App\Models\Menu;
 use App\Models\OrderDetail;
+use App\Models\Pembayaran;
 use App\Models\Pembelian;
 use App\Models\Penjualan;
 use App\Models\PenjualanDetail;
@@ -20,7 +22,11 @@ class DashboardController extends Controller
         // $pembelian_total = Pembelian::select('total')->sum('total');
         // $hutang = Hutang::select('total')->sum('total');
         // $piutang = Piutang::select('total')->sum('total');
-
+        $menu = Menu::count();
+        $pembayaran = Pembayaran::count();
+        $pendapatan_hari_ini = Pembayaran::whereDate('waktu_bayar', today())->sum('total');
+        $pendapatan_bulan_ini = Pembayaran::whereMonth('waktu_bayar', now()->month)->sum('total');
+        $pendapatan_tahun_ini = Pembayaran::whereYear('waktu_bayar', now()->year)->sum('total');
 
 
         // $produk_terlaris = DB::table('penjualan_details')
@@ -55,7 +61,7 @@ class DashboardController extends Controller
                 }
             );
 
-        return view('dashboard', compact('penjualan_tahunan', 'penjualan_bulanan'));
+        return view('dashboard', compact('penjualan_tahunan', 'penjualan_bulanan', 'pendapatan_hari_ini', 'pendapatan_bulan_ini', 'pendapatan_tahun_ini'));
     }
     public function penjualanBulanan(Request $request)
     {

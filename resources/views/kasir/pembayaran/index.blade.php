@@ -51,9 +51,10 @@
                                     <th width="2%">No</th>
                                     <th>No Order</th>
                                     <th>Total</th>
-                                    <th>Uang Cash </th>
+                                    <th>Uang </th>
                                     <th>Kembalian </th>
                                     <th>Waktu Pembayaran </th>
+                                    <th>Metode Pembayaran </th>
                                     <th>Kasir </th>
                                     <th>Aksi</th>
                                 </tr>
@@ -67,6 +68,7 @@
                                         <td> <span class="badge badge-success">@currency($t->uang)</span> </td>
                                         <td><span class="badge badge-secondary">@currency($t->kembalian)</span> </td>
                                         <td>@customDateFormat($t->waktu_bayar)</td>
+                                        <td>{{ $t->status }}</td>
                                         <td>{{ $t->user->name }}</td>
 
                                         <td align="center" width="10%">

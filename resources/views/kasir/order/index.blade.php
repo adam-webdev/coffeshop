@@ -8,6 +8,8 @@
 
         .img-menu-habis {
             filter: grayscale(60);
+            object-fit: cover;
+
         }
 
         .habis {
@@ -86,6 +88,13 @@
             .img-menu {
                 width: 142px;
             }
+
+            .img-menu-habis {
+                height: auto;
+                width: 100%;
+
+            }
+
 
             .head {
                 font-size: 12px;

@@ -41,6 +41,22 @@
 
         }
 
+        .img-menu-habis {
+            filter: grayscale(60);
+            object-fit: cover;
+        }
+
+        .habis {
+            position: absolute;
+            top: 35%;
+            left: 50%;
+            background: white;
+            font-weight: bold;
+            padding: 4px 8px;
+            border-radius: 20px;
+            transform: translate(-50%, -50%);
+        }
+
         a.menu-link {
             color: #663300;
             text-decoration: none;
@@ -170,6 +186,12 @@
             .img-menu {
                 width: 100%;
                 height: auto;
+            }
+
+            .img-menu-habis {
+                height: auto;
+                width: 100%;
+
             }
 
             .head {
@@ -316,10 +338,10 @@
                         Login Petugas
                     </a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                    {{-- <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                         <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                         Logout
-                    </a>
+                    </a> --}}
                 </div>
             </li>
         </ul>
@@ -434,20 +456,34 @@
                 <div class="d-flex tbody">
                     @foreach ($menu as $m)
                         <div class="menu">
-                            <a href="#" class="menu-link" data-nama="{{ $m->nama }}"
-                                data-harga="{{ $m->harga }}" data-id="{{ $m->id }}">
+                            <a href="#" class="menu-link"
+                                @if ($m->status == 0) onclick="return false;"
+                                style="pointer-events: none; color: grey; text-decoration: none;"
+                                data-toggle="tooltip"
+                                title="Menu ini habis"
+                                @else
+                                data-nama="{{ $m->nama }}"
+                                data-harga="{{ $m->harga }}"
+                                data-id="{{ $m->id }}" @endif>
                                 <div class="card">
-                                    <img class="img-menu" src="/storage/{{ $m->foto }}" width="150px"
-                                        height="150px" alt="{{ $m->nama }}">
+                                    @if ($m->status == 0)
+                                        <img class="img-menu-habis" src="/storage/{{ $m->foto }}"
+                                            width="150px" height="150px" alt="{{ $m->nama }}">
+                                    @else
+                                        <img class="img-menu" src="/storage/{{ $m->foto }}" width="150px"
+                                            height="150px" alt="{{ $m->nama }}">
+                                    @endif
                                     <div class="title p-2">
                                         <span><b>{{ $m->nama }}</b></span><br>
                                         <span>@currency($m->harga)</span>
+                                        @if ($m->status == 0)
+                                            <br><span class="habis" style="color: red;">Habis</span>
+                                        @endif
                                     </div>
                                 </div>
                             </a>
                         </div>
                     @endforeach
-
                 </div>
             </div>
         </div>

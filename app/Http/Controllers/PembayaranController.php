@@ -11,8 +11,9 @@ class PembayaranController extends Controller
 {
     public function index()
     {
+        $pembayaran = Pembayaran::count();
         $transaksi = Pembayaran::with(['order', 'user'])->orderBy('id', 'desc')->get();
-        return view('kasir.pembayaran.index', compact('transaksi'));
+        return view('kasir.pembayaran.index', compact('transaksi', 'pembayaran'));
     }
 
     public function order($id)

@@ -25,7 +25,12 @@ class OrderController extends Controller
         $order = Order::with('meja')->orderBy('created_at', 'desc')->get();
         return view('kasir.order.riwayat', compact('order'));
     }
-
+    public function show($id)
+    {
+        $order = Order::with(['orderdetail.menu', 'meja', 'pembayaran.user'])->where('id', $id)->get();
+        // ddd($order);
+        return view('kasir.order.detail', compact('order'));
+    }
     public function store(Request $request)
     {
         $new_order = new Order();

@@ -94,6 +94,21 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-2 mt-2">
+            <div class="card p-2 cardMenu">
+                <div class="d-flex align-items-center">
+                    <span class="p-2 mr-4" style="background: rgba(240, 240, 240, 0.661)">
+                        <p><i class="fas fa-money-check-alt " style="font-size:40px;color:#663300"></i></p>
+                        <p>Total Transaksi</p>
+                    </span>
+                    <span>
+                        <h2 class="jumlah text-success">{{ $pembayaran }}</h2>
+                        {{-- <a href="{{ route('pendapatan.index') }}" class="text-dark">Detail <i
+                                class="fas fa-arrow-right"></i></a> --}}
+                    </span>
+                </div>
+            </div>
+        </div>
     </div>
 
 @endsection

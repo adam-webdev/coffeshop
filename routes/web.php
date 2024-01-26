@@ -29,6 +29,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('/dashboard', DashboardController::class);
     Route::get('/penjualan-by-bulan-tahun', [DashboardController::class, 'penjualanBulanan'])->name('penjualan.bulan');
     Route::get('/penjualan-by-tahun', [DashboardController::class, 'penjualanTahunan'])->name('penjualan.tahun');
+    // eoq
+    Route::get('/hitung/eoq', [DashboardController::class, 'hitungEoq'])->name('hitung_eoq');
+    Route::post('/hitung/eoq', [DashboardController::class, 'hitungEoqStore'])->name('hitung.store');
 
     Route::resource('/bahan-baku', BahanBakuController::class);
     Route::get('/bahan-baku/hapus/{id}', [BahanBakuController::class, "delete"]);

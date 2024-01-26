@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BahanBaku;
 use App\Models\Hutang;
 use App\Models\Menu;
 use App\Models\OrderDetail;
@@ -13,6 +14,7 @@ use App\Models\Piutang;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class DashboardController extends Controller
 {
@@ -23,7 +25,6 @@ class DashboardController extends Controller
         // $hutang = Hutang::select('total')->sum('total');
         // $piutang = Piutang::select('total')->sum('total');
         $menu = Menu::count();
-        $pembayaran = Pembayaran::count();
         $pendapatan_hari_ini = Pembayaran::whereDate('waktu_bayar', today())->sum('total');
         $pendapatan_bulan_ini = Pembayaran::whereMonth('waktu_bayar', now()->month)->sum('total');
         $pendapatan_tahun_ini = Pembayaran::whereYear('waktu_bayar', now()->year)->sum('total');
@@ -48,11 +49,15 @@ class DashboardController extends Controller
 
         // ddd($produk_terlaris);
         $penjualan_tahunan = OrderDetail::select(DB::raw('YEAR(created_at) as year'), 'menu_id', DB::raw('SUM(jumlah) as total'))->with('menu')
+            ->whereYear('created_at', now()->year)
             ->orderBy('total', 'desc')
             ->groupBy('year', 'menu_id')
             ->get();
+
         $penjualan_bulanan = OrderDetail::select(DB::raw('MONTH(created_at) as month'), 'menu_id', DB::raw('SUM(jumlah) as total'))->with('menu')
             ->orderBy('total', 'desc')
+            ->whereMonth('created_at', now()->month)
+            ->whereYear('created_at', now()->year)
             ->groupBy('month', 'menu_id')
             ->get()->map(
                 function ($item) {
@@ -128,5 +133,48 @@ class DashboardController extends Controller
 
             return response()->json($produk_terlaris);
         }
+    }
+    //eoq
+    public function calculateEOQ($demand, $orderCost, $holdingCost)
+    {
+        // Rumus EOQ: sqrt((2 * demand * orderCost) / holdingCost)
+        return sqrt((2 * $demand * $orderCost) / $holdingCost);
+    }
+
+    public function hitungEoq()
+    {
+        $bahanbaku = BahanBaku::get();
+        return view('admin.hitung-eoq.index', compact('bahanbaku'));
+    }
+    public function hitungEoqStore(Request $request)
+    {
+        $demand = $request->demand;
+        $orderCost = $request->order_cost;
+        $holdingCost = $request->holding_cost;
+        $bahanbaku_id = $request->bb_id;
+
+        $bahan_baku = BahanBaku::findOrFail($bahanbaku_id);
+        $hasil_eoq = ceil($this->calculateEOQ($demand, $orderCost, $holdingCost));
+
+        // jumlah setiap memesan bahan baku
+        $jumlah_per_pesan = ceil($demand / $hasil_eoq);
+        // periode pemesan berapa hari sekali dalam setahun
+        $waktu_memesan = ceil(360 / $jumlah_per_pesan);
+        $bahanbaku = BahanBaku::get();
+
+        $data = [
+            "demand" => $demand,
+            "orderCost" => $orderCost,
+            "holdingCost" => $holdingCost,
+            "bahanbaku" => $bahanbaku,
+            "bahan_baku" => $bahan_baku,
+            "hasil_eoq" => $hasil_eoq,
+            "jumlah_per_pesan" => $jumlah_per_pesan,
+            "waktu_memesan" => $waktu_memesan
+        ];
+
+        // ddd($data);
+        Alert::success('Berhasil', 'Perhitungan EOQ Berhasil Dihitung.');
+        return view('admin.hitung-eoq.index', $data);
     }
 }

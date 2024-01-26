@@ -79,6 +79,11 @@
                                                         Bayar
                                                     </a>
                                                 @endif
+                                                <a href="{{ route('order.show', [$o->id]) }}" data-toggle="tooltip"
+                                                    title="Detail Order"
+                                                    class="mt-2 d-sm-inline-block btn btn-sm btn-secondary ">
+                                                    Detail
+                                                </a>
                                                 <a href="/order/hapus/{{ $o->id }}" data-toggle="tooltip" title="Hapus"
                                                     onclick="return confirm('Yakin Ingin menghapus data?')"
                                                     class="mt-2 d-sm-inline-block btn btn-sm text-white shadow-sm"

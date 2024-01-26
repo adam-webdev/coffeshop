@@ -15,10 +15,10 @@
 
 @endsection
 @section('content')
-    <div class="card p-4">
+    {{-- <div class="card p-4">
         <h5>Selamat Datang <b>{{ Auth::user()->name }} </b> di Dashboard </h5>
         <hr>
-    </div>
+    </div> --}}
     <div class="row mt-3">
         <div class="col-md-3">
             <div class="card p-2 cardMenu">
@@ -110,7 +110,10 @@
                     {{-- <button type="submit">Filter</button> --}}
                     </form>
                 </div>
-                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                <div id="chartTahun">
+                    <canvas id="penjualan_tahunan"></canvas>
+                </div>
+                {{-- <div class="d-sm-flex align-items-center justify-content-between mb-4">
                     <div class="table-responsive">
                         <table class="table table-bordered " id="dataTable" width="100%">
                             <thead>
@@ -133,7 +136,7 @@
                             </tbody>
                         </table>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
         <div class="col-md-6">
@@ -141,7 +144,6 @@
                 <div class="flex">
 
                     <h4>Penjualan Bulanan</h4>
-                    {{-- <form action="{{ route('penjualan.bulan') }}" method="GET"> --}}
                     <div class="form">
                         <label for="bulan">Pilih Bulan:</label>
                         <select name="bulan" id="bulan" class="mr-4">
@@ -161,33 +163,10 @@
                         </select>
                     </div>
 
-                    {{-- <button type="submit">Filter</button> --}}
                     </form>
                 </div>
-                <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <div class="table-responsive">
-
-                        <table class="table table-bordered " id="dataTable2" width="100%">
-                            <thead>
-                                <tr align="center">
-                                    <th>No</th>
-                                    <th>Menu </th>
-                                    <th>Total Penjualan</th>
-                                    <th>Bulan</th>
-                                </tr>
-                            </thead>
-                            <tbody id="data-penjualan-bulanan">
-                                @foreach ($penjualan_bulanan as $sales)
-                                    <tr align="center">
-                                        <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $sales->menu->nama }}</td>
-                                        <td>{{ $sales->total }}</td>
-                                        <td>{{ $sales->month_name }}</td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
+                <div id="chartBulan">
+                    <canvas id="penjualan_bulanan"></canvas>
                 </div>
             </div>
         </div>
@@ -278,8 +257,6 @@
             $('#bulan, #tahun').on('change', function() {
                 var bulan = $('#bulan').val()
                 var tahun = $('#tahun').val()
-                console.log(bulan)
-                console.log(tahun)
                 $.ajax({
                     type: 'GET',
                     url: "{{ route('penjualan.bulan') }}",
@@ -288,25 +265,19 @@
                         tahun: tahun
                     },
                     success: function(data) {
-                        console.log("data : ", data)
-
-                        if (data.length == 0) {
-                            $('#data-penjualan-bulanan').html(`
-                       <tr align="center"><td colspan="4">Data tidak ditemukan!</td></tr>
-                    `)
-                        } else {
-                            $('#data-penjualan-bulanan').html(
-                                data.map((item, index) => {
-                                    return `<tr>
-                                         <td>${index+1}</td>
-                                        <td>${ item.menu.nama }</td>
-                                        <td>${ item.total }</td>
-                                        <td>${ item.month_name }</td>
-                                    </tr>
-                                       `
-                                })
-
-                            )
+                        var oldcanvasbulanan = document.getElementById('penjualan_bulanan');
+                        if (oldcanvasbulanan) {
+                            oldcanvasbulanan.remove()
+                        }
+                        // Buat elemen canvas baru
+                        var newChartCanvas = document.createElement('canvas');
+                        newChartCanvas.id = 'penjualan_bulanan';
+                        if (data.length > 0) {
+                            document.getElementById('chartBulan').appendChild(
+                                newChartCanvas
+                            );
+                            // bulanan
+                            chartBulanan(data, tahun)
                         }
                     },
                     error: function(xhr, status, error) {
@@ -316,7 +287,6 @@
             })
             $("#tahun-penjualan").on('change', function() {
                 var tahun = $('#tahun-penjualan').val()
-                console.log(tahun)
                 $.ajax({
                     type: 'GET',
                     url: "{{ route('penjualan.tahun') }}",
@@ -324,32 +294,158 @@
                         tahun: tahun
                     },
                     success: function(data) {
-                        console.log("data : ", data)
-
-                        if (data.length == 0) {
-                            $('#data-penjualan-tahunan').html(`
-                       <tr align="center"><td colspan="4">Data tidak ditemukan!</td></tr>
-                    `)
-                        } else {
-                            $('#data-penjualan-tahunan').html(
-                                data.map((item, index) => {
-                                    return `<tr>
-                                         <td>${index+1}</td>
-                                        <td>${ item.menu.nama }</td>
-                                        <td>${ item.total }</td>
-                                        <td>${ item.year }</td>
-                                    </tr>
-                                       `
-                                })
-
-                            )
+                        var oldcanvastahunan = document.getElementById('penjualan_tahunan');
+                        if (oldcanvastahunan) {
+                            oldcanvastahunan.remove()
                         }
+                        var newChartCanvas = document.createElement('canvas');
+                        newChartCanvas.id = 'penjualan_tahunan';
+                        if (data.length > 0) {
+                            document.getElementById('chartTahun').appendChild(
+                                newChartCanvas
+                            ); // Gantilah 'chart-container' dengan ID atau
+                            chartTahunan(data)
+                        }
+                        // } else {
+                        //     var noDataMessage = document.createElement('p');
+                        //     noDataMessage.textContent = 'Tidak ada data untuk tahun ' + tahun;
+                        //     document.getElementById('chartTahun').appendChild(noDataMessage);
+                        //     noDataMessage.remove()
+                        // }
                     },
                     error: function(xhr, status, error) {
                         console.error(xhr.responseText)
                     }
                 })
             })
+
+            // Di dalam tag <script> pada chart.blade.php
+            // Ambil data dari controller
+            var penjualanTahunan = {!! json_encode($penjualan_tahunan) !!};
+            var penjualanBulanan = {!! json_encode($penjualan_bulanan) !!};
+
+            var namaMenuBulanan = []
+            var jumlahBulanan = []
+
+            //tahunan
+
+
+            function chartTahunan(penjualanTahunan) {
+                var penjualanMenuTahunan = {}
+                penjualanTahunan.forEach(function(item, index) {
+                    var namaMenu = item.menu.nama
+
+                    if (!penjualanMenuTahunan[namaMenu]) {
+                        penjualanMenuTahunan[namaMenu] = item.total
+                    } else {
+                        penjualanMenuTahunan[namaMenu] += item.total
+                    }
+                })
+
+                var namaMenuTahunan = Object.keys(penjualanMenuTahunan)
+                var jumlahTahunan = Object.values(penjualanMenuTahunan)
+
+
+                // console.log("nama menu bulanan", jumlahBulanan)
+                console.log("penjualan bulanan", penjualanBulanan)
+                console.log("penjualan tahunan", penjualanTahunan)
+                var ctx = document.getElementById('penjualan_tahunan').getContext('2d');
+
+                var tahunChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: namaMenuTahunan,
+                        datasets: [{
+                            label: "Penjualan Tahun " + penjualanTahunan[0].year,
+                            data: jumlahTahunan,
+                            borderWidth: 1,
+                            fill: false,
+                            borderColor: '#663300',
+                            color: '#663300',
+                            backgroundColor: '#663300',
+                        }]
+                    },
+                    options: {
+                        animations: {
+                            tension: {
+                                duration: 1000,
+                                easing: 'linear',
+                                from: 1,
+                                to: 0,
+                                loop: true
+                            }
+                        },
+                        scales: {
+                            y: { // defining min and max so hiding the dataset does not change scale range
+                                min: 0,
+                                max: 100
+                            }
+                        }
+                        // options: {
+                        //     scales: {
+                        //         y: {
+                        //             beginAtZero: true
+                        //         }
+                        //     }
+                        // }
+                    }
+                });
+                console.log("chart", tahunChart)
+            }
+
+            chartTahunan(penjualanTahunan)
+
+            // bulanan
+
+
+            function chartBulanan(penjualanBulanan, tahun) {
+                var penjualanMenuBulanan = {}
+                penjualanBulanan.forEach(function(item, index) {
+                    var namaMenu = item.menu.nama
+
+                    if (!penjualanMenuBulanan[namaMenu]) {
+                        penjualanMenuBulanan[namaMenu] = item.total
+                    } else {
+                        penjualanMenuBulanan[namaMenu] += item.total
+                    }
+                })
+
+                var namaMenuBulanan = Object.keys(penjualanMenuBulanan)
+                var jumlahBulanan = Object.values(penjualanMenuBulanan)
+
+                var bulan = document.getElementById('penjualan_bulanan').getContext('2d');
+                var bulanChart = new Chart(bulan, {
+                    type: 'bar',
+                    data: {
+                        labels: namaMenuBulanan,
+                        datasets: [{
+                            label: "Penjualan periode " + penjualanBulanan[0].month_name + " " +
+                                tahun,
+                            data: jumlahBulanan,
+                            borderWidth: 1,
+                            borderColor: '#663300',
+                            color: '#663300',
+                            backgroundColor: '#663300',
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+                console.log("chart", bulanChart)
+                return bulanChart
+            }
+
+            var now = new Date();
+            var currentYear = now.getFullYear();
+
+            console.log(currentYear); // Menampilkan tahun saat ini di konsol
+
+            chartBulanan(penjualanBulanan, currentYear)
 
         })
     </script>

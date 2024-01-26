@@ -72,6 +72,10 @@
             #searchDropdown {
                 display: none;
             }
+
+            .sidebar {
+                left: -200px;
+            }
         }
     </style>
 </head>
@@ -85,7 +89,7 @@
     <div id="wrapper">
 
         <!-- Sidebar -->
-        <ul class="navbar-nav fixed sidebar accordion" id="accordionSidebar"
+        <ul class="navbar-nav fixed-left sidebar accordion" id="accordionSidebar"
             style="background: hsl(0, 0%, 100%); color:#663300;">
 
             <div>
@@ -109,9 +113,17 @@
             <hr class="sidebar-divider">
 
             <li class="nav-item">
-                <a class="nav-link text-white" href="{{ route('dashboard.index') }}">
+                <a class="nav-link text-white {{ request()->is('dashboard') ? 'active' : '' }}"
+                    href="{{ route('dashboard.index') }}">
                     <i class="fa fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link text-white {{ request()->is('hitung/eoq') ? 'active' : '' }}"
+                    href="{{ route('hitung_eoq') }}">
+                    <i class="fas fa-square-root-alt"></i>
+                    <span>EOQ</span></a>
             </li>
 
             <li class="nav-item">

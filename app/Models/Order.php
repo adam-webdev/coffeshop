@@ -18,6 +18,10 @@ class Order extends Model
     {
         return $this->hasMany(OrderDetail::class);
     }
+    public function pembayaran()
+    {
+        return $this->hasMany(Pembayaran::class);
+    }
 
 
 

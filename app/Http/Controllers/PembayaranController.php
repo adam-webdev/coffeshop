@@ -32,7 +32,11 @@ class PembayaranController extends Controller
         $pembayaran->total = $request->total;
         $pembayaran->waktu_bayar = $request->waktu_bayar;
         $pembayaran->uang = $request->uang;
-        $pembayaran->kembalian = $request->kembalian;
+        if ($request->status === "cash") {
+            $pembayaran->kembalian = $request->kembalian;
+        } else {
+            $pembayaran->kembalian = 0;
+        }
         $pembayaran->save();
         Order::where('id', $request->order_id)->update(["status" => "paid"]);
         return redirect()->route('pembayaran.sukses', [$pembayaran->id]);
@@ -45,6 +49,14 @@ class PembayaranController extends Controller
     public function cetak_struk($id)
     {
         $transaksi = Pembayaran::with(['order.orderdetail.menu', 'user'])->where('id', $id)->first();
+        // ddd($transaksi);
+        return view('kasir.pembayaran.struk', compact('transaksi'));
+    }
+
+
+    public function cetak_struk_order($id)
+    {
+        $transaksi = Pembayaran::with(['order.orderdetail.menu', 'user'])->where('order_id', $id)->first();
         // ddd($transaksi);
         return view('kasir.pembayaran.struk', compact('transaksi'));
     }

@@ -73,7 +73,7 @@
 
 <body class="body" onload="window.print()">
     <div id="receipt"class="receipt">
-        <h2>Coffe AreaKongkow</h2>
+        <h2>Coffeshop Katanya</h2>
         <p class="span">Jln Sama Aku mau ga</p>
         <div class="item">
             <p class="span">{{ $transaksi->order->no_order }}</p>
@@ -119,8 +119,8 @@
         </div>
         <div class="item">
 
-            <p class="span">Ig : @areakongkow</p>
-            <p class="span">Titktok : @areakongkow</p>
+            <p class="span">Ig : @katanya</p>
+            <p class="span">Titktok : @katanya</p>
         </div>
 
         {{-- <button id="printButton" onclick="printReceipt()">Print Struk</button> --}}

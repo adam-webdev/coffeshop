@@ -103,7 +103,7 @@
                     </div>
 
                 </a>
-                <p class="ml-3 mt-4 text-center"><b> AreaKongkow </b></p>
+                <p class="ml-3 mt-4 text-center"><b> Katanya </b></p>
             </div>
 
             <!-- Divider -->
@@ -119,7 +119,7 @@
                     <span>Dashboard</span></a>
             </li>
 
-            <li class="nav-item">
+             <li class="nav-item">
                 <a class="nav-link text-white {{ request()->is('hitung/eoq') ? 'active' : '' }}"
                     href="{{ route('hitung_eoq') }}">
                     <i class="fas fa-square-root-alt"></i>
@@ -164,6 +164,8 @@
                             Bahan Baku Terpakai </a>
                         <a class="collapse-item fas fa-arrow-circle-right" href="{{ route('ingredients.index') }}">
                             Bahan Bahan Menu </a>
+                        <a class="collapse-item fas fa-arrow-circle-right" href="{{ route('orderbahanbaku.index') }}">
+                            Order Bahan Bahan Baku </a>
                     </div>
                 </div>
             </li>
@@ -228,7 +230,7 @@
                         class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
                             <div class="input-group-append">
-                                <h4 class="text-dark font-weight-bold">Coffeshop AreaKongkow </h4>
+                                <h4 class="text-dark font-weight-bold">Coffeshop Katanya </h4>
                             </div>
                         </div>
                     </form>
@@ -305,7 +307,7 @@
             <footer class="sticky-footer">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Dibuat oleh Pebriyanti<br> &copy; Coffeshop AreaKongkow, Indonesia. </span>
+                        <span>Dibuat oleh Adam Webdev<br> &copy; Coffeshop Katanya, Indonesia. </span>
                     </div>
                 </div>
             </footer>

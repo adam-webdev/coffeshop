@@ -153,15 +153,15 @@
                         <div class="form-group my-2 px-4">
                             <div class="row mt-4">
                                 <img src="{{ asset('/asset/img/transfer/bri.png') }}" alt="Bri Logo">
-                                <p>no rek : <b>18000090</b> a/n <b>coffeareakongkow</b></p>
+                                <p>no rek : <b>18000090</b> a/n <b>Katanya</b></p>
                             </div>
                             <div class="row mt-4 ">
                                 <img src="{{ asset('/asset/img/transfer/mandiri.png') }}" alt="Mandiri Logo">
-                                <p>no rek : <b>18000090</b> a/n <b>coffeareakongkow</b></p>
+                                <p>no rek : <b>18000090</b> a/n <b>Katanya</b></p>
                             </div>
                             <div class="row mt-4">
                                 <img src="{{ asset('/asset/img/transfer/bcaa.png') }}" alt="Bca Logo">
-                                <p>no rek : <b>18000090</b> a/n <b>coffeareakongkow</b></p>
+                                <p>no rek : <b>18000090</b> a/n <b>Katanya</b></p>
                             </div>
                         </div>
                     </div>
@@ -170,22 +170,22 @@
                         <div class="form-group my-2 px-4">
                             <div class="row mt-4">
                                 <img src="{{ asset('/asset/img/transfer/dana.png') }}" alt="Dana Logo">
-                                <p>no dana : <b>083213344</b> a/n <b>coffeareakongkow</b></p>
+                                <p>no dana : <b>083213344</b> a/n <b>Katanya</b></p>
 
                             </div>
                             <div class="row mt-4 ">
                                 <img src="{{ asset('/asset/img/transfer/shoopepay.png') }}" alt="Shopee Pay Logo">
-                                <p>no shopeepay : <b>083213344</b> a/n <b>coffeareakongkow</b></p>
+                                <p>no shopeepay : <b>083213344</b> a/n <b>Katanya</b></p>
 
                             </div>
                             <div class="row mt-4">
                                 <img src="{{ asset('/asset/img/transfer/gopay.png') }}" alt="Gopay Logo">
-                                <p>no gopay : <b>083213344</b> a/n <b>coffeareakongkow</b></p>
+                                <p>no gopay : <b>083213344</b> a/n <b>Katanya</b></p>
 
                             </div>
                             <div class="row mt-4">
                                 <img src="{{ asset('/asset/img/transfer/ovo.png') }}" alt="Ovo Logo">
-                                <p>no ovo : <b>083213344</b> a/n <b>coffeareakongkow</b></p>
+                                <p>no ovo : <b>083213344</b> a/n <b>Katanya</b></p>
                             </div>
                         </div>
                     </div>
@@ -193,7 +193,7 @@
                         <div class="form-group my-2 px-4">
                             <div class="row mt-4">
                                 <img src="{{ asset('/asset/img/transfer/qris.png') }}" alt="Qris Logo">
-                                <p>Silahkan scan barcode diatas a/n <b>coffeareakongkow</b></p>
+                                <p>Silahkan scan barcode diatas a/n <b>Katanya</b></p>
                             </div>
                         </div>
                     </div>

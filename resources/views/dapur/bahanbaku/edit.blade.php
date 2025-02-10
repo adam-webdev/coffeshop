@@ -23,14 +23,23 @@
                                 id="harga" required>
                         </div>
                         <div class="form-group ">
+                            <label for="minimal">Minimal Stok :</label>
+                            <input type="number" name="minimal_stok" value="{{ $bahanbaku->minimal_stok }}"
+                            class="form-control" id="minimal" required>
+                        </div>
+                        <div class="form-group ">
                             <label for="stok">Stok :</label>
                             <input type="number" name="stok" value="{{ $bahanbaku->stok }}" class="form-control"
                                 id="jumlah" required>
                         </div>
+
+                         <div class="form-group ">
+                            <label for="lead_time">Lead Time:</label>
+                            <input type="text" name="lead_time" value="{{ $bahanbaku->lead_time }}" class="form-control" id="lead_time" >
+                        </div>
                         <div class="form-group ">
-                            <label for="minimal">Minimal Stok :</label>
-                            <input type="number" name="minimal_stok" value="{{ $bahanbaku->minimal_stok }}"
-                                class="form-control" id="minimal" required>
+                            <label for="rata_rata_stok_pertahun">Rata Rata Stok Pertahun :</label>
+                            <input type="text" name="rata_rata_stok_pertahun" value="{{ $bahanbaku->rata_rata_stok_pertahun }}"  class="form-control" id="rata_rata_stok_pertahun" >
                         </div>
                         <div class="form-group">
                             <label for="satuan">Satuan Barang :</label>
@@ -49,8 +58,8 @@
                             <label for="nohp">Status :</label>
                             <select name="status" id="status" class="form-control">
                                 <option value=""disabled>-- Pilih Status -- </option>
-                                <option value="1" {{ $bahanbaku->status == 1 ? 'selected' : '' }}>Tersedia </option>
-                                <option value="0" {{ $bahanbaku->status == 0 ? 'selected' : '' }}>Tidak Ada </option>
+                                <option value="1" {{ $bahanbaku->status == 1 ? 'selected' : '' }}>Aktif </option>
+                                <option value="0" {{ $bahanbaku->status == 0 ? 'selected' : '' }}>Tidak Aktif </option>
                             </select>
                         </div>
 

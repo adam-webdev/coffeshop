@@ -39,7 +39,7 @@
                             <div class="col-lg-20">
                                 <div class="p-5">
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Coffe Shop<br>AreaKongkow<br>
+                                        <h1 class="h4 text-gray-900 mb-4">Coffe Shop<br>Katanya<br>
                                             <br><img src="{{ asset('asset/img/coffe.jpg') }}" width="160">
                                         </h1>
                                     </div>

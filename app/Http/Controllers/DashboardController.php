@@ -138,7 +138,8 @@ class DashboardController extends Controller
     public function calculateEOQ($demand, $orderCost, $holdingCost)
     {
         // Rumus EOQ: sqrt((2 * demand * orderCost) / holdingCost)
-        return sqrt((2 * $demand * $orderCost) / $holdingCost);
+        $biayaPerpesan = 0.1;
+        return sqrt((2 * $demand * $orderCost) / ($holdingCost * $biayaPerpesan));
     }
 
     public function hitungEoq()

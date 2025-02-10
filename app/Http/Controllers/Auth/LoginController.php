@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
 {
@@ -18,7 +20,13 @@ class LoginController extends Controller
     | to conveniently provide its functionality to your applications.
     |
     */
-
+    protected function sendFailedLoginResponse(Request $request)
+    {
+        throw ValidationException::withMessages([
+            'email' => "Email yang anda masukan tidak terdaftar",
+            'password' => "Password yang anda masukan salah",
+        ]);
+    }
     use AuthenticatesUsers;
 
     /**

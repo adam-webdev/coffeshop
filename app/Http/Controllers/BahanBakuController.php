@@ -16,7 +16,7 @@ class BahanBakuController extends Controller
     // }
     public function index()
     {
-        $bahanbaku = BahanBaku::orderBy('id', 'desc')->get();
+        $bahanbaku = BahanBaku::with('orderbahanbaku')->orderBy('id', 'desc')->get();
         return view('dapur.bahanbaku.index', compact("bahanbaku"));
     }
 
@@ -31,14 +31,42 @@ class BahanBakuController extends Controller
         //
     }
 
+    public function calculateEOQ($s, $d, $h)
+    {
+        // EOQ = √(2SD/H)
+        // S = Biaya Pemesanan untuk sekali pesan
+        // D = Permintaan, jumlah menu terjual dalam setahun / bulan
+        // H = Biaya Penyimpanan per unit bahan baku dalam setahun / sebulan
+        return sqrt((2 * $s * $d) / $h);
+    }
 
+    public function show($id)
+    {
+        $bahanbaku = BahanBaku::findOrFail($id);
+        // biaya penyimpanan dan pemesanan  sekali pesan 10% dari harga dan total harga
+
+        $s = ($bahanbaku->rata_rata_stok_pertahun * $bahanbaku->harga) * 0.1;
+        $d = $bahanbaku->rata_rata_stok_pertahun;
+        $h = $bahanbaku->harga * 0.1;
+
+        $eoq = (int) round($this->calculateEOQ($s, $d, $h));
+        // rumus :
+        // Reorder point = penggunaan selama lead
+        // time + safety stock / minimal stock
+        $pemakaian_perhari = $eoq / 365;
+        $rop = round(($pemakaian_perhari * $bahanbaku->lead_time) + $bahanbaku->minimal_stok);
+        return view("dapur.bahanbaku.show", compact('bahanbaku', 'eoq', 'rop', 'h', 's'));
+    }
     public function store(Request $request)
     {
 
         $material = new BahanBaku;
         $material->nama = $request->nama;
         $material->stok = $request->stok;
+        $material->lead_time = $request->lead_time;
+        $material->rata_rata_stok_pertahun = $request->rata_rata_stok_pertahun;
         $material->minimal_stok = $request->minimal_stok;
+        $material->maximal_stok = $request->maximal_stok;
         $material->status = $request->status;
         $material->harga = $request->harga;
         $material->satuan = $request->satuan;
@@ -67,6 +95,9 @@ class BahanBakuController extends Controller
         $material = BahanBaku::findOrFail($id);
         $material->nama = $request->nama;
         $material->stok = $request->stok;
+        $material->lead_time = $request->lead_time;
+        $material->rata_rata_stok_pertahun = $request->rata_rata_stok_pertahun;
+        $material->maximal_stok = $request->maximal_stok;
         $material->minimal_stok = $request->minimal_stok;
         $material->status = $request->status;
         $material->harga = $request->harga;

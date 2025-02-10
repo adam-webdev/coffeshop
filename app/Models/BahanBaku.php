@@ -22,6 +22,10 @@ class BahanBaku extends Model
     {
         return $this->hasOne(BahanBakuMasuk::class);
     }
+    public function orderbahanbaku()
+    {
+        return $this->belongsTo(OrderBahanBaku::class);
+    }
 
 
     public function ingredients()

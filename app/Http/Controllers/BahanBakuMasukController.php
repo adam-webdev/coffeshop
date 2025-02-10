@@ -9,10 +9,10 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class BahanBakuMasukController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('role:Admin|Direktur|Gudang');
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('role:Admin|Direktur|Gudang');
+    // }
 
     public function index()
     {
@@ -21,9 +21,7 @@ class BahanBakuMasukController extends Controller
         return view('dapur.bahanbakumasuk.index', compact("bahanbakumasuk", "bahanbaku"));
     }
 
-    public function create()
-    {
-    }
+    public function create() {}
 
 
     public function store(Request $request)

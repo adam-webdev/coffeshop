@@ -19,6 +19,7 @@ class CreateOrderBahanBakusTable extends Migration
             $table->string('jumlah');
             $table->date('tanggal');
             $table->string('petugas');
+            $table->string('harga');
             $table->string('total_harga');
             $table->string('keterangan')->nullable();
             $table->string('supplier')->nullable();

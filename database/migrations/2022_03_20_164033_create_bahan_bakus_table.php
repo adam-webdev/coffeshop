@@ -18,6 +18,9 @@ class CreateBahanBakusTable extends Migration
             $table->integer('harga');
             $table->string('satuan');
             $table->string('status')->nullable();
+            $table->string('lead_time')->nullable();
+            $table->string('rata_rata_stok_pertahun')->nullable();
+            $table->integer('maximal_stok')->nullable();
             $table->integer('minimal_stok')->nullable();
             $table->timestamps();
         });

@@ -28,11 +28,6 @@
                             class="form-control" id="minimal" required>
                         </div>
                         <div class="form-group ">
-                            <label for="maximal">Maximal Stok :</label>
-                            <input type="number" name="maximal_stok" value="{{ $bahanbaku->maximal_stok }}"
-                            class="form-control" id="maximal" required>
-                        </div>
-                        <div class="form-group ">
                             <label for="stok">Stok :</label>
                             <input type="number" name="stok" value="{{ $bahanbaku->stok }}" class="form-control"
                                 id="jumlah" required>
